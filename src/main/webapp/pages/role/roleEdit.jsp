@@ -16,7 +16,7 @@
 			<tr>
 				<td>角色类型</td>
 				<td>
-                        <select name="isAdmin" class="easyui-combobox" data-options="width:140,height:29,editable:false,panelHeight:'auto'">
+                        <select name="type" class="easyui-combobox" data-options="width:140,height:29,editable:false,panelHeight:'auto'">
                             <option value="1">系统管理员</option>
                             <option value="0" selected="selected">用户</option>
                         </select>

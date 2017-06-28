@@ -8,6 +8,7 @@ import java.util.List;
 import com.wuji.authority.model.Permit;
 import com.wuji.authority.model.Role;
 import com.wuji.authority.model.RolePermit;
+import com.wuji.authority.vo.Tree;
 import com.wuji.basic.service.BaseService;
 
 /**
@@ -25,5 +26,10 @@ public interface PermitService extends BaseService<Permit>
 	List<Permit> findPermitByRoleId(Long roleId);
 
 	RolePermit addPermitForRole(Role role, Permit permit);
+
+	/**
+	 * @return
+	 */
+	List<Tree> findAllTree();
 
 }

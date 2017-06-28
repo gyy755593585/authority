@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.wuji.authority.dao.UserDao;
 import com.wuji.authority.model.User;
 import com.wuji.basic.dao.BaseDao;
+import com.wuji.basic.model.Pager;
 
 /**
  * @author Yayun
@@ -41,6 +42,14 @@ public class UserDaoImpl extends BaseDao<User> implements UserDao {
 	public void update(User t) {
 		super.setEditInfo(t);
 		super.update(t);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.wuji.authority.dao.UserDao#findByPage()
+	 */
+	@Override
+	public Pager<User> findByPage() {
+		return this.find("from User", null);
 	}
 
 }

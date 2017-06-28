@@ -3,7 +3,10 @@
  */
 package com.wuji.authority.service;
 
+import java.util.List;
+
 import com.wuji.authority.model.User;
+import com.wuji.basic.model.Pager;
 import com.wuji.basic.service.BaseService;
 
 /**
@@ -19,5 +22,12 @@ public interface UserService extends BaseService<User> {
 	 * @return
 	 */
 	User findByUserName(String userName);
+
+	/**
+	 * @return
+	 */
+	Pager<User> findByPage();
+
+	void update(User user, List<Long> roleIds);
 
 }

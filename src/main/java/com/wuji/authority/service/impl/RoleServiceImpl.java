@@ -1,20 +1,37 @@
-/**
+
+/*
+ * Copyright 2017 the original author or authors.
  *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
  */
+
 package com.wuji.authority.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.wuji.authority.dao.PermitDao;
 import com.wuji.authority.dao.RoleDao;
 import com.wuji.authority.dao.RolePermitDao;
 import com.wuji.authority.dao.UserRoleDao;
+import com.wuji.authority.model.Permit;
 import com.wuji.authority.model.Role;
+import com.wuji.authority.model.RolePermit;
 import com.wuji.authority.model.User;
 import com.wuji.authority.model.UserRole;
 import com.wuji.authority.service.RoleService;
+import com.wuji.authority.vo.Tree;
+import com.wuji.basic.model.Pager;
 
 /**
  * @author Yayun
@@ -31,6 +48,9 @@ public class RoleServiceImpl extends BaseServiceImpl implements RoleService {
 
 	@Autowired
 	private RolePermitDao rolePermitDao;
+
+	@Autowired
+	private PermitDao permitDao;
 
 	/* (non-Javadoc)
 	 * @see com.wuji.basic.service.BaseService#add(java.lang.Object)
@@ -91,6 +111,56 @@ public class RoleServiceImpl extends BaseServiceImpl implements RoleService {
 		userRole.setRole(role);
 		userRole.setUser(user);
 		return this.userRoleDao.add(userRole);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.wuji.authority.service.RoleService#findPermitIdListByRoleId(java.lang.Long)
+	 */
+	@Override
+	public List<Long> findPermitIdListByRoleId(Long id) {
+		return this.rolePermitDao.findPermitIdListByRoleId(id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.wuji.authority.service.RoleService#findAllTree()
+	 */
+	@Override
+	public List<Tree> findAllTree() {
+		List<Tree> result = new ArrayList<Tree>();
+		List<Role> roles = this.roleDao.findAll();
+		Tree tree = null;
+		for (Role role : roles) {
+			tree = new Tree();
+			tree.setId(role.getId());
+			tree.setText(role.getRoleName());
+			result.add(tree);
+		}
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.wuji.authority.service.RoleService#findByPager()
+	 */
+	@Override
+	public Pager<Role> findByPager() {
+		return this.roleDao.findByPage();
+	}
+
+	/* (non-Javadoc)
+	 * @see com.wuji.authority.service.RoleService#updateRolePermit(java.lang.Long, java.util.List)
+	 */
+	@Override
+	public void updateRolePermit(Long id, List<Long> permitIds) {
+		this.rolePermitDao.deletByRoleId(id);
+		Role role = this.load(id);
+		RolePermit rolePermit = null;
+		for (Long permitId : permitIds) {
+			rolePermit = new RolePermit();
+			Permit permit = this.permitDao.load(permitId);
+			rolePermit.setPermit(permit);
+			rolePermit.setRole(role);
+			this.rolePermitDao.add(rolePermit);
+		}
 	}
 
 }

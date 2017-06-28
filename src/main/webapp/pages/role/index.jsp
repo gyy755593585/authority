@@ -10,7 +10,7 @@ $(function() {
 	datagrid = $('#datagrid')
 			.datagrid(
 					{
-						url : 'sysRoleAction!getSysRoleList',
+						url : 'roleAction!getRoleList',
 						iconCls : 'icon-save',
                         pagination : true,
 			            pagePosition : 'bottom',
@@ -33,17 +33,9 @@ $(function() {
 							field : 'roleName',
 							width : 100,
 							sortable : true
-						},{
-							title : '所属系统',
-							field : 'userSystem',
-							width : 100,
-							sortable : true,
-							formatter : function(value, row, index) {
-			                    return row.userSystem.systemName;
-			                }
 						}, {
 							title : '角色类型',
-							field : 'isAdmin',
+							field : 'type',
 							width : 150,
 							sortable : true,
 							 formatter : function(value, row, index) {
@@ -109,7 +101,7 @@ function edit() {
 		var p = parent.dj
 				.dialog( {
 					title : '修改角色',
-					href : '${pageContext.request.contextPath}/sysRoleAction!sysRoleEdit?id=' + rows[0].id,
+					href : '${pageContext.request.contextPath}/roleAction!roleEdit?id=' + rows[0].id,
 					width : 600,
 					height : 450,
 					buttons : [ {
@@ -120,7 +112,7 @@ function edit() {
 									.form(
 											'submit',
 											{
-												url : '${pageContext.request.contextPath}/sysRoleAction!edit',
+												url : '${pageContext.request.contextPath}/roleAction!edit',
 												success : function(d) {
 													var json = $.parseJSON(d);
 													if (json.success) {
@@ -141,7 +133,7 @@ function edit() {
 						f.form('load', {
 							id : rows[0].id,
 							roleName : rows[0].roleName,
-							idAdmin : rows[0].idAdmin
+							type : rows[0].type
 							
 						});
 
@@ -157,7 +149,7 @@ function append() {
 	var p = parent.dj
 			.dialog( {
 				title : '新增角色',
-				href : '${pageContext.request.contextPath}/sysRoleAction!sysRoleAdd',
+				href : '${pageContext.request.contextPath}/roleAction!roleAdd',
 				width : 600,
 				height : 450,
 				buttons : [ {
@@ -165,7 +157,7 @@ function append() {
 					handler : function() {
 						var f = p.find('form');
 						f.form( {
-									url : '${pageContext.request.contextPath}/sysRoleAction!add',
+									url : '${pageContext.request.contextPath}/roleAction!add',
 									success : function(d) {
 										var json = $.parseJSON(d);
 										if (json.success) {
@@ -198,7 +190,7 @@ function remove() {
 								}
 								$
 										.ajax( {
-											url : '${pageContext.request.contextPath}/sysRoleAction!delete',
+											url : '${pageContext.request.contextPath}/roleAction!delete',
 											data : {
 												ids : ids.join(',')
 											},
@@ -232,7 +224,7 @@ function changeStatus(rowIndex) {
 				if (r) {
 					id=row.id;
 					$.ajax( {
-								url : '${pageContext.request.contextPath}/sysRoleAction!changeStatus',
+								url : '${pageContext.request.contextPath}/roleAction!changeStatus',
 								data : {
 									id : id,
 									isAdmin:isAdmin
@@ -263,7 +255,7 @@ function grantRoleFun(id) {
         title : '授权',
         width : 500,
         height : 500,
-        href : '${path }/sysRoleAction!grantPage?id=' + id,
+        href : '${path }/roleAction!grantPage?id=' + id,
         buttons : [ {
             text : '确定',
             handler : function() {

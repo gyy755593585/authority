@@ -59,4 +59,13 @@ public class RolePermitDaoImpl extends BaseDao<RolePermit> implements RolePermit
 		query.setParameter(0, permitId);
 		query.executeUpdate();
 	}
+
+	/* (non-Javadoc)
+	 * @see com.wuji.authority.dao.RolePermitDao#findPermitIdListByRoleId(java.lang.Long)
+	 */
+	@Override
+	public List<Long> findPermitIdListByRoleId(Long id) {
+		return (List<Long>) this.getHibernateTemplate().find("select rp.permit.id from RolePermit rp where rp.role.id=?", id);
+	}
+
 }

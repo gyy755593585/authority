@@ -8,10 +8,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.wuji.authority.dao.RoleDao;
 import com.wuji.authority.dao.UserDao;
 import com.wuji.authority.dao.UserRoleDao;
+import com.wuji.authority.model.Role;
 import com.wuji.authority.model.User;
+import com.wuji.authority.model.UserRole;
 import com.wuji.authority.service.UserService;
+import com.wuji.basic.model.Pager;
 import com.wuji.basic.model.SystemException;
 
 /**
@@ -23,6 +27,9 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 
 	@Autowired
 	private UserDao userDao;
+
+	@Autowired
+	private RoleDao roleDao;
 
 	@Autowired
 	private UserRoleDao userRoleDao;
@@ -78,6 +85,32 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	@Override
 	public User findByUserName(String userName) {
 		return this.userDao.findByUserName(userName);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.wuji.authority.service.UserService#findByPage()
+	 */
+	@Override
+	public Pager<User> findByPage() {
+		Pager<User> result = this.userDao.findByPage();
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see com.wuji.authority.service.UserService#update(com.wuji.authority.model.User, java.util.List)
+	 */
+	@Override
+	public void update(User user, List<Long> roleIds) {
+		this.userRoleDao.deleteByUserId(user.getId());
+		UserRole userRole = null;
+		for (Long roleId : roleIds) {
+			userRole = new UserRole();
+			Role role = this.roleDao.load(roleId);
+			userRole.setRole(role);
+			userRole.setUser(user);
+			this.userRoleDao.add(userRole);
+		}
+		this.userDao.update(user);
 	}
 
 }

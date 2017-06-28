@@ -11,19 +11,11 @@
 			<tr>
 				<td>角色类型</td>
 				<td>
-                        <select name="isAdmin" class="easyui-combobox" data-options="width:140,height:29,editable:false,panelHeight:'auto'">
+                        <select name="type" class="easyui-combobox" data-options="width:140,height:29,editable:false,panelHeight:'auto'">
                             <option value="0" selected="selected">用户</option>
                             <option value="1">系统管理员</option>
                         </select>
                     </td>
-			</tr>
-			<tr>
-				<td>所属系统</td>
-                 <td><select id="systemCode" name="systemCode" style="width: 140px; height: 29px;">
-                 <c:forEach items="${userSystems}" var="system">
-								<option value="${ system.systemCode}">${ system.systemName}</option>
-							</c:forEach>
-                 </select></td>
 			</tr>
 			
 		</table>

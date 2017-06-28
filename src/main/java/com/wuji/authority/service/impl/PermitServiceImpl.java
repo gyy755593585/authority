@@ -3,6 +3,7 @@
  */
 package com.wuji.authority.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import com.wuji.authority.model.Permit;
 import com.wuji.authority.model.Role;
 import com.wuji.authority.model.RolePermit;
 import com.wuji.authority.service.PermitService;
+import com.wuji.authority.vo.Tree;
 
 /**
  * @author Yayun
@@ -86,6 +88,26 @@ public class PermitServiceImpl extends BaseServiceImpl implements PermitService 
 		rolePermit.setPermit(permit);
 		rolePermit.setRole(role);
 		return this.rolePermitDao.add(rolePermit);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.wuji.authority.service.PermitService#findAllTree()
+	 */
+	@Override
+	public List<Tree> findAllTree() {
+		List<Tree> result = new ArrayList<>();
+		Tree tree = null;
+		List<Permit> pemits = this.permitDao.findAll();
+		for (Permit permit : pemits) {
+			tree = new Tree();
+			tree.setId(permit.getId());
+			tree.setText(permit.getPermitName());
+			if (permit.getParentPermit() != null) {
+				tree.setPid(permit.getParentPermit().getId());
+			}
+			result.add(tree);
+		}
+		return result;
 	}
 
 }

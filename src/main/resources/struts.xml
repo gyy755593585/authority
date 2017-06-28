@@ -32,36 +32,34 @@
 		<!-- <global-exception-mappings>
 			<exception-mapping result="error" exception="java.lang.Exception"></exception-mapping>
 		</global-exception-mappings> -->
-		<global-allowed-methods>register</global-allowed-methods>
+		<global-allowed-methods>regex:.*</global-allowed-methods>
 	</package>
 
 
 	<package name="struts2" extends="my-default">
 		 
 		<!-- 系统登录 -->
-		<global-allowed-methods>register,logout</global-allowed-methods>
 		<action name="loginAction" class="loginAction">
 			<result name="index">/index.jsp</result>
 			<result name="login">/login.jsp</result>
 			<interceptor-ref name="defaultStack"></interceptor-ref>
 		</action>
-		<action name="*!*" method="{2}" class="{1}">
+		
+		<!--  系统用户 -->
+		<action name="userAction" class="userAction">
+			<result name="userAdd">/pages/user/userAdd.jsp</result>
+			<result name="userEdit">/pages/user/userEdit.jsp</result>
 		</action>
-		<!--  系统用户 
-		<action name="sysUserAction" class="sysUserAction">
-			<result name="sysUserAdd">/pages/user/userAdd.jsp</result>
-			<result name="sysUserEdit">/pages/user/userEdit.jsp</result>
+		<!-- 系统角色 -->
+		<action name="roleAction" class="roleAction">
+			<result name="roleAdd">/pages/role/roleAdd.jsp</result>
+			<result name="roleEdit">/pages/role/roleEdit.jsp</result>
+			<result name="roleGrant">/pages/role/roleGrant.jsp</result>
 		</action>
-		系统角色
-		<action name="sysRoleAction" class="sysRoleAction">
-			<result name="sysRoleAdd">/pages/role/roleAdd.jsp</result>
-			<result name="sysRoleEdit">/pages/role/roleEdit.jsp</result>
-			<result name="sysRoleGrant">/pages/role/roleGrant.jsp</result>
-		</action>
-		系统权限
-		<action name="sysPermitAction" class="sysPermitAction">
-			<result name="sysPermitAdd">/pages/permit/permitAdd.jsp</result>
-			<result name="sysPermitEdit">/pages/permit/permitEdit.jsp</result>
-		</action> -->
+		<!-- 系统权限 -->
+		<action name="permitAction" class="permitAction">
+			<result name="permitAdd">/pages/permit/permitAdd.jsp</result>
+			<result name="permitEdit">/pages/permit/permitEdit.jsp</result>
+		</action> 
 	</package>
 </struts>

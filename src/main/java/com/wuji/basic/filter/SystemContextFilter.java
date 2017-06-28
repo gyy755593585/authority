@@ -62,7 +62,7 @@ public class SystemContextFilter implements Filter {
 			}
 			int pageOffset = (page - 1) * rows;
 			systemRequest.setPageOffset(pageOffset);
-			systemRequest.setPageSize(page);
+			systemRequest.setPageSize(rows);
 			SystemRequestHolder.initRequestHolder(systemRequest);
 			chain.doFilter(request, response);
 		} finally {

@@ -119,13 +119,13 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public Object loadEntity(int id, Class clz) {
+	public Object loadEntity(int id, Class<?> clz) {
 		return this.getHibernateTemplate().load(clz, id);
 	}
 
 	public List<?> listObj(String hql, Map<String, Object> alias, Object... args) {
 		hql = this.initSort(hql);
-		Query query = this.currentSession().createQuery(hql);
+		Query<?> query = this.currentSession().createQuery(hql);
 		this.setAliasParameter(query, alias);
 		this.setParameter(query, args);
 		return query.list();
@@ -141,7 +141,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 
 	public List<T> list(String hql, Map<String, Object> alias, Object... args) {
 		hql = this.initSort(hql);
-		Query query = this.currentSession().createQuery(hql);
+		Query<T> query = this.currentSession().createQuery(hql);
 		this.setAliasParameter(query, alias);
 		this.setParameter(query, args);
 		return query.list();
@@ -153,8 +153,8 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	public Pager<T> find(String hql, Map<String, Object> alias, Object... args) {
 		hql = this.initSort(hql);
 		String cq = this.getCountHql(hql, true);
-		Query cquery = this.currentSession().createQuery(cq);
-		Query query = this.currentSession().createQuery(hql);
+		Query<?> cquery = this.currentSession().createQuery(cq);
+		Query<T> query = this.currentSession().createQuery(hql);
 		// 设置别名参数
 		this.setAliasParameter(query, alias);
 		this.setAliasParameter(cquery, alias);
@@ -174,7 +174,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		hql = this.initSort(hql);
 		// String cq = getCountHql(hql,true);
 		// Query cquery = getSession().createQuery(cq);
-		Query query = this.currentSession().createQuery(hql);
+		Query<?> query = this.currentSession().createQuery(hql);
 		// 设置别名参数
 		this.setAliasParameter(query, alias);
 		// setAliasParameter(cquery, alias);
@@ -183,7 +183,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		// setParameter(cquery, args);
 		Pager<T> pages = new Pager<T>();
 		this.setPagers(query, pages);
-		List<T> datas = query.list();
+		List<T> datas = (List<T>) query.list();
 		pages.setRows(datas);
 		return pages;
 	}
@@ -192,7 +192,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	 * @see org.konghao.baisc.dao.IBaseDao#updateByHql(java.lang.String, java.lang.Object[])
 	 */
 	public void updateByHql(String hql, Object... args) {
-		Query query = this.currentSession().createQuery(hql);
+		Query<?> query = this.currentSession().createQuery(hql);
 		this.setParameter(query, args);
 		query.executeUpdate();
 	}
@@ -226,7 +226,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	}
 
 	public Object queryObject(String hql, Map<String, Object> alias, Object... args) {
-		Query query = this.currentSession().createQuery(hql);
+		Query<?> query = this.currentSession().createQuery(hql);
 		this.setAliasParameter(query, alias);
 		this.setParameter(query, args);
 		return query.uniqueResult();
@@ -275,14 +275,14 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	}
 
 	@SuppressWarnings("rawtypes")
-	private void setAliasParameter(Query query, Map<String, Object> alias) {
+	private void setAliasParameter(Query<?> query, Map<String, Object> alias) {
 		if (alias != null) {
 			Set<String> keys = alias.keySet();
 			for (String key : keys) {
 				Object val = alias.get(key);
 				if (val instanceof Collection) {
 					// 查询条件是列表
-					query.setParameterList(key, (Collection) val);
+					query.setParameterList(key, (Collection<?>) val);
 				} else {
 					query.setParameter(key, val);
 				}
@@ -290,7 +290,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		}
 	}
 
-	private void setParameter(Query query, Object[] args) {
+	private void setParameter(Query<?> query, Object[] args) {
 		if (args != null && args.length > 0) {
 			int index = 0;
 			for (Object arg : args) {
@@ -307,7 +307,7 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	}
 
 	@SuppressWarnings("rawtypes")
-	protected void setPagers(Query query, Pager pages) {
+	protected void setPagers(Query<?> query, Pager<?> pages) {
 		Integer pageSize = this.getSystemRequest().getPageSize();
 		Integer pageOffset = this.getSystemRequest().getPageOffset();
 		if (pageOffset == null || pageOffset < 0) {

@@ -7,9 +7,13 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 /**
  * @author Yayun 权限
@@ -27,6 +31,10 @@ public class Permit extends BaseModel implements Serializable {
 	/**
 	 *
 	 */
+	@Id
+	@GeneratedValue(generator = "increment")
+	@GenericGenerator(name = "increment", strategy = "increment")
+	private Long id;
 
 	@Column(name = "permit_name")
 	private String permitName;
@@ -52,6 +60,22 @@ public class Permit extends BaseModel implements Serializable {
 
 	public void setPermitCode(String permitCode) {
 		this.permitCode = permitCode;
+	}
+
+	public Permit getParentPermit() {
+		return this.parentPermit;
+	}
+
+	public void setParentPermit(Permit parentPermit) {
+		this.parentPermit = parentPermit;
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

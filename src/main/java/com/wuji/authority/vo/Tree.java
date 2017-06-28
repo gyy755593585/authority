@@ -15,9 +15,9 @@ public class Tree implements Serializable {
 	 */
 	private static final long serialVersionUID = -9170935622272935940L;
 
-	private int id;
+	private Long id;
 
-	private int pid;
+	private Long pid;
 
 	private String text;
 
@@ -29,19 +29,19 @@ public class Tree implements Serializable {
 
 	private Object attributes;
 
-	public int getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public int getPid() {
+	public Long getPid() {
 		return this.pid;
 	}
 
-	public void setPid(int pid) {
+	public void setPid(Long pid) {
 		this.pid = pid;
 	}
 

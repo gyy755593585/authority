@@ -9,7 +9,7 @@
 		<table class="tableForm">
 		<tr>
 				<td>权限名称</td>
-				<td><input id="name"  type ="text"  name="name" value="${name }" class="easyui-validatebox" placeholder="请输入权限名称"  data-options="required:true,missingMessage:'请输入权限名称'" style="width:98%;" /></td>
+				<td><input id="permitName"  type ="text"  name="name" value="${permitName }" class="easyui-validatebox" placeholder="请输入权限名称"  data-options="required:true,missingMessage:'请输入权限名称'" style="width:98%;" /></td>
 				<td><input type="hidden" name="Id" value=${id}  /></td>
 			</tr>
 			<tr>
@@ -17,15 +17,7 @@
 				<td><input id="permitCode"  type ="text"  name="permitCode" value="${permitCode }" class="easyui-validatebox" placeholder="请输入权限编码" data-options="required:true,missingMessage:'请输入权限编码'" style="width:98%;" /></td>
 			</tr>
 			
-			<tr>
-				<td>权限类型</td>
-				<td>
-                        <select name="sysPermitType" class="easyui-combobox" data-options="width:140,height:29,editable:false,panelHeight:'auto'">
-                            <option value="WRITE">读写</option>
-                            <option value="READ"  selected="selected">只读</option>
-                        </select>
-                    </td>
-			</tr>
+			
 			
 		</table>
 	</form>

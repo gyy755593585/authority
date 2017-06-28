@@ -10,7 +10,7 @@ $(function() {
 	datagrid = $('#datagrid')
 			.datagrid(
 					{
-						url : 'sysPermitAction!getSysPermitList',
+						url : 'permitAction!getPermitAll',
 						iconCls : 'icon-save',
                         pagination : true,
 			            pagePosition : 'bottom',
@@ -30,7 +30,7 @@ $(function() {
 							checkbox : true
 						},{
 							title : '名称',
-							field : 'name',
+							field : 'permitName',
 							width : 100,
 							sortable : true
 						}, {
@@ -39,17 +39,17 @@ $(function() {
 							width : 250,
 							sortable : true
 						},{
-							title : '角色类型',
-							field : 'sysPermitType',
-							width : 150,
+							title : '父节点',
+							field : 'parentPermit',
+							width : 250,
 							sortable : true,
 							 formatter : function(value, row, index) {
-				                    if(value == 'READ') {
-				                        return "只读";
-				                    }else if(value == 'WRITE') {
-				                        return "可写";
+				                    if(value == null) {
+				                        return "无";
+				                    }else  {
+				                        return value.permitName;
 				                    }
-				                    return "未知类型";
+				                    
 				                }
 						}] ],
 						toolbar : [ {
@@ -71,14 +71,7 @@ $(function() {
 								edit();
 							}
 						}, '-' ],
-						columns : [ [ {
-							title : '操作',
-							field : 'll',
-							width : 100,
-							formatter : function(value, rowData, rowIndex) {
-								return '<span class="icon-search" style="display:inline-block;vertical-align:middle;width:16px;height:16px;"></span><a href="javascript:void(0);" onclick="changeStatus(' + rowIndex + ');">改变状态</a>';
-							}
-						} ] ],
+						
 						onRowContextMenu : function(e, rowIndex, rowData) {
 							e.preventDefault();
 							$(this).datagrid('unselectAll');
@@ -96,7 +89,7 @@ function edit() {
 		var p = parent.dj
 				.dialog( {
 					title : '修改角色',
-					href : '${pageContext.request.contextPath}/sysPermitAction!sysPermitEdit?id=' + rows[0].id,
+					href : '${pageContext.request.contextPath}/permitAction!permitEdit?id=' + rows[0].id,
 					width : 600,
 					height : 450,
 					buttons : [ {
@@ -107,7 +100,7 @@ function edit() {
 									.form(
 											'submit',
 											{
-												url : '${pageContext.request.contextPath}/sysPermitAction!edit',
+												url : '${pageContext.request.contextPath}/permitAction!edit',
 												success : function(d) {
 													var json = $.parseJSON(d);
 													if (json.success) {
@@ -144,7 +137,7 @@ function append() {
 	var p = parent.dj
 			.dialog( {
 				title : '新增角色',
-				href : '${pageContext.request.contextPath}/sysPermitAction!sysPermitAdd',
+				href : '${pageContext.request.contextPath}/permitAction!permitAdd',
 				width : 600,
 				height : 450,
 				buttons : [ {
@@ -152,7 +145,7 @@ function append() {
 					handler : function() {
 						var f = p.find('form');
 						f.form( {
-									url : '${pageContext.request.contextPath}/sysPermitAction!add',
+									url : '${pageContext.request.contextPath}/permitAction!add',
 									success : function(d) {
 										var json = $.parseJSON(d);
 										if (json.success) {
@@ -185,7 +178,7 @@ function remove() {
 								}
 								$
 										.ajax( {
-											url : '${pageContext.request.contextPath}/sysPermitAction!delete',
+											url : '${pageContext.request.contextPath}/permitAction!delete',
 											data : {
 												ids : ids.join(',')
 											},

@@ -10,7 +10,7 @@ $(function() {
 	datagrid = $('#datagrid')
 			.datagrid(
 					{
-						url : 'sysUserAction!getSysUserList',
+						url : 'userAction!getUserList',
 						iconCls : 'icon-save',
                         pagination : true,
 			            pagePosition : 'bottom',
@@ -116,7 +116,7 @@ function edit() {
 		var p = parent.dj
 				.dialog( {
 					title : '修改用户',
-					href : '${pageContext.request.contextPath}/sysUserAction!sysUserEdit?id=' + rows[0].id,
+					href : '${pageContext.request.contextPath}/userAction!userEdit?id=' + rows[0].id,
 					width : 600,
 					height : 450,
 					buttons : [ {
@@ -127,7 +127,7 @@ function edit() {
 									.form(
 											'submit',
 											{
-												url : '${pageContext.request.contextPath}/sysUserAction!edit',
+												url : '${pageContext.request.contextPath}/userAction!edit',
 												success : function(d) {
 													var json = $.parseJSON(d);
 													if (json.success) {
@@ -164,7 +164,7 @@ function append() {
 	var p = parent.dj
 			.dialog( {
 				title : '新增用户',
-				href : '${pageContext.request.contextPath}/sysUserAction!sysUserAdd',
+				href : '${pageContext.request.contextPath}/userAction!userAdd',
 				width : 600,
 				height : 450,
 				buttons : [ {
@@ -172,7 +172,7 @@ function append() {
 					handler : function() {
 						var f = p.find('form');
 						f.form( {
-									url : '${pageContext.request.contextPath}/sysUserAction!add',
+									url : '${pageContext.request.contextPath}/userAction!add',
 									success : function(d) {
 										var json = $.parseJSON(d);
 										if (json.success) {
@@ -205,7 +205,7 @@ function remove() {
 								}
 								$
 										.ajax( {
-											url : '${pageContext.request.contextPath}/sysUserAction!delete',
+											url : '${pageContext.request.contextPath}/userAction!delete',
 											data : {
 												ids : ids.join(',')
 											},
@@ -240,7 +240,7 @@ function changeStatus(rowIndex) {
 					id=row.id;
 					status=
 					$.ajax( {
-								url : '${pageContext.request.contextPath}/sysUserAction!changeStatus',
+								url : '${pageContext.request.contextPath}/userAction!changeStatus',
 								data : {
 									id : id,
 									status:status

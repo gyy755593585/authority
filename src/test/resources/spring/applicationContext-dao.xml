@@ -29,10 +29,11 @@
 	</bean>
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <!--  设置spring去那个包中查找相应的实体类-->
+        <property name="mappingDirectoryLocations"	value="classpath:/mapping"/>
+        <!--  设置spring去那个包中查找相应的实体类
         <property name="packagesToScan">
             	<value>com.wuji.authority.model</value>
-        </property>
+        </property>-->
         <property name="hibernateProperties">
         <props>
         	<prop key="hibernate.show_sql">true</prop>
