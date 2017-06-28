@@ -3,7 +3,7 @@
 <script type="text/javascript">
     $(function() {
         $('#userAddRoleIds').combotree({
-            url: '${pageContext.request.contextPath}/sysUserAction!getRoleTree',
+            url: '${pageContext.request.contextPath}/userAction!getRoleTree',
             multiple: true,
             required: true,
             panelHeight : 'auto'
