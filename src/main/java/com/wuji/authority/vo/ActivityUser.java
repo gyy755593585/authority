@@ -13,7 +13,7 @@ public class ActivityUser {
 
 	private static final long serialVersionUID = -1373760761780840081L;
 
-	private Integer id;
+	private Long id;
 
 	private final String loginName;
 
@@ -30,11 +30,11 @@ public class ActivityUser {
 		this.loginName = loginName;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

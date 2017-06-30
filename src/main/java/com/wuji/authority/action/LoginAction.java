@@ -138,6 +138,7 @@ public class LoginAction extends BaseAction implements ModelDriven<User> {
 		// 放入Session中用户对象
 		ActivityUser activityUser = new ActivityUser(this.user.getUserName());
 		activityUser.setName(loginUser.getNickName());
+		activityUser.setId(loginUser.getId());
 		List<Role> roleList = this.roleService.findRoleByUserName(this.user.getUserName());
 		// 用户所有角色名
 		Set<String> roles = new HashSet<>();
