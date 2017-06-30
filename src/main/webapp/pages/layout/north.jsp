@@ -14,7 +14,7 @@
 	function showUserInfo() {
 		var p = parent.dj.dialog({
 			title : '用户信息',
-			href : '${pageContext.request.contextPath}/user!doNotNeedAuth_userInfo.do',
+			href : '${pageContext.request.contextPath}/loginAction!userInfo?id=${activityUser.id}',
 			width : 490,
 			height : 285,
 			buttons : [ {
@@ -22,40 +22,21 @@
 				handler : function() {
 					var f = p.find('form');
 					f.form('submit', {
-						url : '${pageContext.request.contextPath}/user!doNotNeedAuth_editUserInfo.do',
+						url : '${pageContext.request.contextPath}/loginAction!editUserInfo',
 						success : function(d) {
-							var json = $.parseJSON(d);
-							if (json.success) {
+							var result = $.parseJSON(d);
+							if (result.success) {
 								p.dialog('close');
 							}
 							parent.dj.messagerShow({
-								msg : json.msg,
+								msg : result.msg,
 								title : '提示'
 							});
 						}
 					});
 				}
 			} ],
-			onLoad : function() {
-				var authIds = p.find('ul');
-				var authIdsTree = authIds.tree({
-					url : '${pageContext.request.contextPath}/auth!doNotNeedSession_treeRecursive.do',
-					lines : true,
-					checkbox : true,
-					onLoadSuccess : function(node, data) {
-						var f = p.find('form');
-						var ids = f.find('input[name=authIds]').val();
-						var idList = dj.getList(ids);
-						if (idList.length > 0) {
-							for ( var i = 0; i < idList.length; i++) {
-								var n = authIdsTree.tree('find', idList[i]);
-								authIdsTree.tree('check', n.target);
-							}
-						}
-						authIdsTree.unbind();
-					}
-				});
-			}
+			
 		});
 	}
 </script>

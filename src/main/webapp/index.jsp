@@ -5,7 +5,7 @@
 <head>
 <%@ include file="/commons/basejs.jsp" %>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>无极权限</title>
 </head>
 <body class="easyui-layout">
 	<div data-options="region:'north',href:'${pageContext.request.contextPath}/pages/layout/north.jsp'" style="height: 30px;overflow: hidden;" ></div>

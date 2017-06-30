@@ -56,7 +56,7 @@ public class RoleAction extends BaseAction implements ModelDriven<Role> {
 
 	private Long id;
 
-	private List<Long> permitIds;
+	private String permitIds;
 
 	@Override
 	public Role getModel() {
@@ -176,11 +176,11 @@ public class RoleAction extends BaseAction implements ModelDriven<Role> {
 		this.id = id;
 	}
 
-	public List<Long> getPermitIds() {
+	public String getPermitIds() {
 		return this.permitIds;
 	}
 
-	public void setPermitIds(List<Long> permitIds) {
+	public void setPermitIds(String permitIds) {
 		this.permitIds = permitIds;
 	}
 

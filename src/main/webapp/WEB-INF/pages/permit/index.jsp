@@ -31,7 +31,7 @@ $(function() {
 						},{
 							title : '名称',
 							field : 'permitName',
-							width : 100,
+							width : 250,
 							sortable : true
 						}, {
 							title : '权限编号',
@@ -120,7 +120,7 @@ function edit() {
 						var f = p.find('form');
 						f.form('load', {
 							id : rows[0].id,
-							name : rows[0].name,
+							permitName : rows[0].permitName,
 							permitCode : rows[0].permitCode
 							
 						});

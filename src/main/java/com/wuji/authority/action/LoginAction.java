@@ -17,6 +17,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +63,7 @@ public class LoginAction extends BaseAction implements ModelDriven<User> {
 
 	private User user = new User();
 
-	private Integer id;
+	private Long id;
 
 	private List<Integer> roleIds;
 
@@ -74,11 +75,11 @@ public class LoginAction extends BaseAction implements ModelDriven<User> {
 		this.roleIds = roleIds;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -172,5 +173,43 @@ public class LoginAction extends BaseAction implements ModelDriven<User> {
 	public void logout() {
 		this.httpSession.invalidate();
 		this.login();
+	}
+
+	/**
+	 * 页面跳转
+	 *
+	 * @return
+	 */
+	public String userInfo() {
+		this.id = this.user.getId();
+		this.logger.info(this.id.toString());
+		try {
+			User curUser = this.userService.load(this.id);
+			this.user = curUser;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "userInfo";
+	}
+
+	/**
+	 * 用户更新
+	 */
+	public void editUserInfo() {
+		try {
+			User curUser = this.userService.load(this.user.getId());
+			curUser.setNickName(this.user.getNickName());
+			if (StringUtils.isNotBlank(this.user.getPassword())) {
+				String salt = UUID.randomUUID().toString().replaceAll("-", "");
+				curUser.setSalt(salt);
+				curUser.setPassword(SecurityUtil.md5(salt, this.user.getPassword()));
+			}
+			this.userService.update(curUser);
+			this.writeJson(this.renderSuccess("用户修改成功"));
+		} catch (Exception e) {
+			this.logger.error("修改用户失败", e);
+			this.writeJson(this.renderError("用户修改失败!"));
+		}
 	}
 }

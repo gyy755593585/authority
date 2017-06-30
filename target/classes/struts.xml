@@ -15,53 +15,54 @@
 	<!-- <constant name="struts.action.extension" value="action" /> -->
 
 	<package name="my-default" extends="struts-default" abstract="true">
-		<!-- <interceptors>
-			<interceptor name="authorInterceptor" class="com.ceb.util.AuthorInterceptor" />
-			<interceptor-stack name="myExceptionInterceptor">
+		<interceptors>
+			<interceptor name="authorInterceptor" class="com.wuji.authority.web.interceptor.AuthorInterceptor" />
+			<interceptor-stack name="myInterceptor">
 				<interceptor-ref name="authorInterceptor"></interceptor-ref>
 				<interceptor-ref name="defaultStack"></interceptor-ref>
 			</interceptor-stack>
 		</interceptors>
 
-		<default-interceptor-ref name="myExceptionInterceptor"></default-interceptor-ref>
+		<default-interceptor-ref name="myInterceptor"></default-interceptor-ref>
 		<global-results>
-			<result name="login" type="redirect">sysUserAction!login</result>
 			<result name="notAccess">/notAccess.jsp</result>
 			<result name="error">/error.jsp</result>
-		</global-results> -->
+		</global-results>
 		<!-- <global-exception-mappings>
 			<exception-mapping result="error" exception="java.lang.Exception"></exception-mapping>
 		</global-exception-mappings> -->
-		<global-allowed-methods>register</global-allowed-methods>
+		<global-allowed-methods>regex:.*</global-allowed-methods>
 	</package>
 
 
 	<package name="struts2" extends="my-default">
 		 
 		<!-- 系统登录 -->
-		<global-allowed-methods>register,logout</global-allowed-methods>
 		<action name="loginAction" class="loginAction">
 			<result name="index">/index.jsp</result>
 			<result name="login">/login.jsp</result>
+			<result name="userInfo">/WEB-INF/pages/user/userInfo.jsp</result>
 			<interceptor-ref name="defaultStack"></interceptor-ref>
 		</action>
-		<action name="*!*" method="{2}" class="{1}">
+		
+		<!--  系统用户 -->
+		<action name="userAction" class="userAction">
+			<result name="index">/WEB-INF/pages/user/index.jsp</result>
+			<result name="userAdd">/WEB-INF/pages/user/userAdd.jsp</result>
+			<result name="userEdit">/WEB-INF/pages/user/userEdit.jsp</result>
 		</action>
-		<!--  系统用户 
-		<action name="sysUserAction" class="sysUserAction">
-			<result name="sysUserAdd">/pages/user/userAdd.jsp</result>
-			<result name="sysUserEdit">/pages/user/userEdit.jsp</result>
+		<!-- 系统角色 -->
+		<action name="roleAction" class="roleAction">
+			<result name="index">/WEB-INF/pages/role/index.jsp</result>
+			<result name="roleAdd">/WEB-INF/pages/role/roleAdd.jsp</result>
+			<result name="roleEdit">/WEB-INF/pages/role/roleEdit.jsp</result>
+			<result name="roleGrant">/WEB-INF/pages/role/roleGrant.jsp</result>
 		</action>
-		系统角色
-		<action name="sysRoleAction" class="sysRoleAction">
-			<result name="sysRoleAdd">/pages/role/roleAdd.jsp</result>
-			<result name="sysRoleEdit">/pages/role/roleEdit.jsp</result>
-			<result name="sysRoleGrant">/pages/role/roleGrant.jsp</result>
-		</action>
-		系统权限
-		<action name="sysPermitAction" class="sysPermitAction">
-			<result name="sysPermitAdd">/pages/permit/permitAdd.jsp</result>
-			<result name="sysPermitEdit">/pages/permit/permitEdit.jsp</result>
-		</action> -->
+		<!-- 系统权限 -->
+		<action name="permitAction" class="permitAction">
+			<result name="index">/WEB-INF/pages/permit/index.jsp</result>
+			<result name="permitAdd">/WEB-INF/pages/permit/permitAdd.jsp</result>
+			<result name="permitEdit">/WEB-INF/pages/permit/permitEdit.jsp</result>
+		</action> 
 	</package>
 </struts>

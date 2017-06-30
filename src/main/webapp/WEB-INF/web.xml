@@ -36,7 +36,7 @@
 		<filter-class>com.wuji.basic.filter.AuthFilter</filter-class>
 		<init-param>
 			<param-name>staticResource</param-name>
-			<param-value>.css,.js,.jpg,.png,.gif</param-value>
+			<param-value>.css,.js,.jpg,.png,.gif,.ico</param-value>
 		</init-param>
 		<init-param>
 			<param-name>anonymous</param-name>

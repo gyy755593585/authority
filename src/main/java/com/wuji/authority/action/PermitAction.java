@@ -118,10 +118,10 @@ public class PermitAction extends BaseAction implements ModelDriven<Permit> {
 
 	public void edit() {
 		try {
-			Permit sysPermit = this.permitService.load(this.permit.getId());
-			sysPermit.setPermitName(this.permit.getPermitName());
-			sysPermit.setPermitCode(this.permit.getPermitCode());
-			this.permitService.update(sysPermit);
+			Permit curPermit = this.permitService.load(this.permit.getId());
+			curPermit.setPermitName(this.permit.getPermitName());
+			curPermit.setPermitCode(this.permit.getPermitCode());
+			this.permitService.update(curPermit);
 			this.writeJson(this.renderSuccess("权限修改成功"));
 		} catch (Exception e) {
 			this.logger.error("修改权限失败", e);

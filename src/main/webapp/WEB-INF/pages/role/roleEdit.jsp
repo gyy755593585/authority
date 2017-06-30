@@ -22,21 +22,6 @@
                         </select>
                     </td>
 			</tr>
-			<tr>
-				<td>所属系统</td>
-                 <td><select id="systemCode" name="systemCode" style="width: 140px; height: 29px;">
-                 <c:forEach items="${userSystems}" var="system">
-								<c:choose >
-								<c:when test="${ system.systemCode eq systemCode}">
-								<option value="${ system.systemCode}" selected="selected" >${ system.systemName}</option>
-								</c:when>
-								<c:otherwise>
-								<option value="${ system.systemCode}" >${ system.systemName}</option>
-								</c:otherwise>
-								</c:choose>
-							</c:forEach>
-                 </select></td>
-			</tr>
 		</table>
 	</form>
 </div>
