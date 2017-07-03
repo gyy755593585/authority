@@ -161,32 +161,18 @@ function edit() {
 	}
 }
 function append() {
-	var p = parent.dj
-			.dialog( {
+	var p = parent.$.modalDialog( {
 				title : '新增用户',
 				href : '${pageContext.request.contextPath}/userAction!userAdd',
 				width : 600,
 				height : 450,
 				buttons : [ {
-					text : '新增',
-					handler : function() {
-						var f = p.find('form');
-						f.form( {
-									url : '${pageContext.request.contextPath}/userAction!add',
-									success : function(d) {
-										var json = $.parseJSON(d);
-										if (json.success) {
-											datagrid.datagrid('reload');
-											p.dialog('close');
-										}
-										parent.dj.messagerShow( {
-											msg : json.msg,
-											title : '提示'
-										});
-									}
-								});
-						f.submit();
-					}
+					text : '添加',
+	                handler : function() {
+	                    parent.$.modalDialog.openner_dataGrid = datagrid;//因为添加成功之后，需要刷新这个dataGrid，所以先预定义好
+	                    var f = parent.$.modalDialog.handler.find('#userAddForm');
+	                    f.submit();
+	                }
 				} ]
 			});
 }
