@@ -49,6 +49,7 @@ public class AuthFilter implements Filter {
 		String targetURL = currentURL.substring(currentURL.indexOf("/", 1), currentURL.length());
 		boolean isStaticResource = this.isStaticResource(targetURL);
 		boolean isAnonymousUrl = this.isAnonymousUrl(targetURL);
+
 		// Intercept conditions
 		if (!isStaticResource && !isAnonymousUrl) {
 			// 判断当前页是否是重定向以后的登录页面页面，如果是就不做session的判断，防止出现死循环
@@ -58,6 +59,11 @@ public class AuthFilter implements Filter {
 				httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/login.jsp");// 如果session为空表示用户没有登录就重定向到login.jsp页面
 				return;
 			}
+		}
+		if (targetURL.equals("/login.jsp") && httpServletRequest.getSession(false) != null
+				&& httpServletRequest.getSession(false).getAttribute("activityUser") != null) {
+			httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/index.jsp");// 如果session不为空表示用户没有登录就重定向到index.jsp页面
+			return;
 		}
 		chain.doFilter(request, response);
 	}
