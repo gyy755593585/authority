@@ -13,6 +13,7 @@
 
 package com.wuji.authority.action;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,7 @@ import com.wuji.authority.model.Permit;
 import com.wuji.authority.service.PermitService;
 import com.wuji.authority.service.RoleService;
 import com.wuji.authority.service.UserService;
+import com.wuji.authority.vo.PermitVo;
 import com.wuji.authority.vo.Tree;
 
 /**
@@ -163,7 +165,19 @@ public class PermitAction extends BaseAction implements ModelDriven<Permit> {
 	public void getPermitAll() {
 		try {
 			List<Permit> list = this.permitService.findAll();
-			super.writeJson(list);
+			List<PermitVo> result = new ArrayList<>(list.size());
+			PermitVo permitVo = null;
+			for (Permit pemit : list) {
+				permitVo = new PermitVo();
+				permitVo.setId(pemit.getId());
+				if (pemit.getParentPermit() != null) {
+					permitVo.setPid(pemit.getParentPermit().getId());
+				}
+				permitVo.setPermitCode(pemit.getPermitCode());
+				permitVo.setPermitName(pemit.getPermitName());
+				result.add(permitVo);
+			}
+			super.writeJson(result);
 		} catch (Exception e) {
 			this.writeJson(this.renderError("获取失败"));
 			e.printStackTrace();
