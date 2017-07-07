@@ -14,7 +14,9 @@
 package com.wuji.authority.action;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,12 +27,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.opensymphony.xwork2.ModelDriven;
 import com.wuji.authority.model.Role;
 import com.wuji.authority.model.User;
 import com.wuji.authority.service.PermitService;
 import com.wuji.authority.service.RoleService;
 import com.wuji.authority.service.UserService;
+import com.wuji.authority.util.POIUtil;
 import com.wuji.authority.util.SecurityUtil;
 import com.wuji.authority.vo.Tree;
 import com.wuji.basic.model.Pager;
@@ -236,6 +240,19 @@ public class UserAction extends BaseAction implements ModelDriven<User> {
 			this.writeJson(this.renderError("获取角色失败"));
 			e.printStackTrace();
 		}
+	}
+
+	public void exportUser() {
+		List list = this.userService.findAll();
+		JSONArray ja = new JSONArray(list);
+		Map<String, String> headMap = new LinkedHashMap<String, String>();
+		headMap.put("userName", "姓名");
+		headMap.put("nickName", "昵称");
+		headMap.put("salt", "密码盐");
+		headMap.put("password", "密码");
+		headMap.put("status", "状态");
+		headMap.put("type", "类型");
+		POIUtil.downloadExcelFile("users", headMap, ja, this.response);
 	}
 
 }
