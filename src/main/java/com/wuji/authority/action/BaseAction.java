@@ -105,7 +105,11 @@ public class BaseAction extends ActionSupport
 			this.logger.error("write json error", e);
 		}
 	}
-
+	
+	public String getJson(Object object){
+		return JSON.toJSONStringWithDateFormat(object, "yyyy-MM-dd HH:mm:ss",
+				SerializerFeature.DisableCircularReferenceDetect);
+	}
 	/**
 	 * ajax失败
 	 *
