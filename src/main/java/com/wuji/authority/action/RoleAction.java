@@ -58,6 +58,8 @@ public class RoleAction extends BaseAction implements ModelDriven<Role> {
 
 	private String permitIds;
 
+	private Long permitId;
+
 	@Override
 	public Role getModel() {
 		return this.role;
@@ -160,6 +162,11 @@ public class RoleAction extends BaseAction implements ModelDriven<Role> {
 		super.writeJson(pager);
 	}
 
+	public void getRoleListByPermitId() {
+		Pager<Role> pager = this.roleService.findByPermitId(this.permitId);
+		super.writeJson(pager);
+	}
+
 	public Role getRole() {
 		return this.role;
 	}
@@ -182,6 +189,14 @@ public class RoleAction extends BaseAction implements ModelDriven<Role> {
 
 	public void setPermitIds(String permitIds) {
 		this.permitIds = permitIds;
+	}
+
+	public Long getPermitId() {
+		return this.permitId;
+	}
+
+	public void setPermitId(Long permitId) {
+		this.permitId = permitId;
 	}
 
 }
