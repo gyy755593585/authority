@@ -12,6 +12,7 @@ import com.wuji.authority.dao.RolePermitDao;
 import com.wuji.authority.model.Permit;
 import com.wuji.authority.model.RolePermit;
 import com.wuji.basic.dao.BaseDao;
+import com.wuji.basic.model.Pager;
 
 /**
  * @author Yayun
@@ -66,6 +67,14 @@ public class RolePermitDaoImpl extends BaseDao<RolePermit> implements RolePermit
 	@Override
 	public List<Long> findPermitIdListByRoleId(Long id) {
 		return (List<Long>) this.getHibernateTemplate().find("select rp.permit.id from RolePermit rp where rp.role.id=?", id);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.wuji.authority.dao.RolePermitDao#findByPermitId(java.lang.Long)
+	 */
+	@Override
+	public Pager<RolePermit> findByPermitId(Long permitId) {
+		return this.find("from RolePermit rp where rp.permit.id=? ", permitId);
 	}
 
 }

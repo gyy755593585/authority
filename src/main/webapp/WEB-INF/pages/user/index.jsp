@@ -83,7 +83,13 @@ $(function() {
 							handler : function() {
 								edit();
 							}
-						}, '-' ],
+						}, '-' , {
+							text : '下载',
+							iconCls : 'icon-edit',
+							handler : function() {
+								downLoad();
+							}
+						}, '-'],
 						columns : [ [ {
 							title : '操作',
 							field : 'll',
@@ -245,7 +251,9 @@ function changeStatus(rowIndex) {
 				}
 			});
 }
-
+function downLoad(){
+	window.open("userAction!exportUser","_blank");
+}
 
 </script>
 	</head>
@@ -265,6 +273,9 @@ function changeStatus(rowIndex) {
 				删除
 			</div>
 			<div onclick="edit();" data-options="iconCls:'icon-edit'">
+				编辑
+			</div>
+			<div onclick="downLoad();" data-options="iconCls:'icon-edit'">
 				编辑
 			</div>
 		</div>

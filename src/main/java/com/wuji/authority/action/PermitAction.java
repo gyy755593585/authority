@@ -187,7 +187,7 @@ public class PermitAction extends BaseAction implements ModelDriven<Permit> {
 	public void getPermitTree() {
 		List<Tree> pager;
 		try {
-			pager = this.permitService.findAllTree();
+			pager = this.permitService.findAllTree(this.permit.getId());
 			super.writeJson(pager);
 		} catch (Exception e) {
 			this.writeJson(this.renderError("获取失败"));

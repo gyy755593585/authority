@@ -94,16 +94,21 @@ public class PermitServiceImpl extends BaseServiceImpl implements PermitService 
 	 * @see com.wuji.authority.service.PermitService#findAllTree()
 	 */
 	@Override
-	public List<Tree> findAllTree() {
+	public List<Tree> findAllTree(Long id) {
 		List<Tree> result = new ArrayList<>();
 		Tree tree = null;
-		List<Permit> pemits = this.permitDao.findAll();
+		List<Permit> pemits = this.permitDao.findByPid(id);
 		for (Permit permit : pemits) {
 			tree = new Tree();
 			tree.setId(permit.getId());
 			tree.setText(permit.getPermitName());
 			if (permit.getParentPermit() != null) {
 				tree.setPid(permit.getParentPermit().getId());
+			}
+			if (this.permitDao.hasChild(permit.getId())) {
+				tree.setState("closed");
+			} else {
+				tree.setState("open");
 			}
 			result.add(tree);
 		}

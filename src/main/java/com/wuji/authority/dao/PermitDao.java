@@ -14,6 +14,8 @@
 
 package com.wuji.authority.dao;
 
+import java.util.List;
+
 import com.wuji.authority.model.Permit;
 import com.wuji.basic.dao.IBaseDao;
 import com.wuji.basic.model.Pager;
@@ -25,4 +27,8 @@ import com.wuji.basic.model.Pager;
 public interface PermitDao extends IBaseDao<Permit> {
 
 	Pager<Permit> findByPage();
+
+	boolean hasChild(Long id);
+
+	List<Permit> findByPid(Long id);
 }

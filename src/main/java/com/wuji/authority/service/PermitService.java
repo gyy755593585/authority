@@ -30,6 +30,6 @@ public interface PermitService extends BaseService<Permit>
 	/**
 	 * @return
 	 */
-	List<Tree> findAllTree();
+	List<Tree> findAllTree(Long id);
 
 }

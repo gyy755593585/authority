@@ -43,4 +43,10 @@ public interface RoleService extends BaseService<Role> {
 	 * @return
 	 */
 	Pager<Role> findByPager();
+
+	/**
+	 * @param permitId
+	 * @return
+	 */
+	Pager<Role> findByPermitId(Long permitId);
 }

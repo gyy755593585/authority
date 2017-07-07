@@ -164,4 +164,21 @@ public class RoleServiceImpl extends BaseServiceImpl implements RoleService {
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see com.wuji.authority.service.RoleService#findByPermitId()
+	 */
+	@Override
+	public Pager<Role> findByPermitId(Long permitId) {
+		Pager<RolePermit> pager = this.rolePermitDao.findByPermitId(permitId);
+		Pager<Role> result = new Pager<Role>();
+		List<Role> roles = new ArrayList<>();
+		List<RolePermit> rows = pager.getRows();
+		for (RolePermit rolePermit : rows) {
+			roles.add(rolePermit.getRole());
+		}
+		result.setRows(roles);
+		result.setTotal(pager.getTotal());
+		return result;
+	}
+
 }

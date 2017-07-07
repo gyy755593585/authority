@@ -229,14 +229,77 @@
 						});
 	}
 </script>
+<script type="text/javascript">
+$(function(){
+	$('#tt').tree({    
+	    url:'permitAction!getPermitTree',
+	    	onClick: function(node){
+	    		var datagrid = $('#permitdatagrid')
+				.datagrid(
+						{
+							url : 'roleAction!getRoleListByPermitId',
+							iconCls : 'icon-save',
+	                        pagination : true,
+				            pagePosition : 'bottom',
+				            pageSize : 10,
+				            pageList : [ 10, 20, 30, 40 ],
+				            queryParams:{permitId:node.id},
+							fit : true,
+							fitColumns : false,
+							rownumbers : true,
+							singleSelect : false,
+							border : false,
+							idField : 'id',
+							frozenColumns : [ [ {
+								title : '编号',
+								field : 'id',
+								width : 50,
+								sortable : true,
+								checkbox : true
+							},{
+								title : '角色名',
+								field : 'roleName',
+								width : 100,
+								sortable : true
+							}, {
+								title : '角色类型',
+								field : 'type',
+								width : 150,
+								sortable : true,
+								 formatter : function(value, row, index) {
+					                    if(value == 1) {
+					                        return "系统管理员";
+					                    }else if(value == 0) {
+					                        return "用户";
+					                    }
+					                    return "未知类型";
+					                }
+							}] ]
+							
+						});
+	    	}
+
+	});  
+})
+
+</script>
 </head>
 <body class="easyui-layout">
 
-	<div data-options="region:'center',border:false"
-		style="overflow: hidden;">
-		<table id="datagrid"></table>
+	<div data-options="region:'west',border:false"
+		title="权限树" style="width: 300px; padding: 1px;">
+		<div class="well well-small">
+               <ul id="tt"></ul> 
+        </div>
 	</div>
-
+<div data-options="region:'center',border:false"
+			style="overflow: hidden;">
+			<table id="datagrid"></table>
+		</div>
+		<div data-options="region:'south',border:false"
+			style="overflow: hidden;height: 300px;">
+			<table id="permitdatagrid"></table>
+		</div>
 	<div id="menu" class="easyui-menu" style="width: 120px; display: none;">
 		<div onclick="append();" data-options="iconCls:'icon-add'">增加</div>
 		<div onclick="remove();" data-options="iconCls:'icon-remove'">

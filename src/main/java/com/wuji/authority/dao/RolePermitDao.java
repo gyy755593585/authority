@@ -18,6 +18,7 @@ import java.util.List;
 import com.wuji.authority.model.Permit;
 import com.wuji.authority.model.RolePermit;
 import com.wuji.basic.dao.IBaseDao;
+import com.wuji.basic.model.Pager;
 
 /**
  * @author Yayun
@@ -42,5 +43,11 @@ public interface RolePermitDao extends IBaseDao<RolePermit> {
 	 * @return
 	 */
 	List<Long> findPermitIdListByRoleId(Long id);
+
+	/**
+	 * @param permitId
+	 * @return
+	 */
+	Pager<RolePermit> findByPermitId(Long permitId);
 
 }
