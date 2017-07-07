@@ -50,6 +50,7 @@
 			<result name="index">/WEB-INF/pages/user/index.jsp</result>
 			<result name="userAdd">/WEB-INF/pages/user/userAdd.jsp</result>
 			<result name="userEdit">/WEB-INF/pages/user/userEdit.jsp</result>
+			<result name="excelUpload">/WEB-INF/pages/user/excelUpload.jsp</result>
 		</action>
 		<!-- 系统角色 -->
 		<action name="roleAction" class="roleAction">

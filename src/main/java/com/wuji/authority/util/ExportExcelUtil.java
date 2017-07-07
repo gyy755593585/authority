@@ -56,7 +56,7 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-public class POIUtil {
+public class ExportExcelUtil {
 
 	public static String NO_DEFINE = "no_define";// 未定义的字段
 
@@ -333,7 +333,7 @@ public class POIUtil {
 			HttpServletResponse response) {
 		try {
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
-			POIUtil.exportExcelX(title, headMap, ja, null, 0, os);
+			ExportExcelUtil.exportExcelX(title, headMap, ja, null, 0, os);
 			byte[] content = os.toByteArray();
 			InputStream is = new ByteArrayInputStream(content);
 			// 设置response参数，可以打开下载页面
@@ -394,7 +394,7 @@ public class POIUtil {
 		OutputStream outXlsx = new FileOutputStream("E://b.xlsx");
 		System.out.println("正在导出xlsx....");
 		Date d2 = new Date();
-		POIUtil.exportExcelX(title, headMap, ja, null, 0, outXlsx);
+		ExportExcelUtil.exportExcelX(title, headMap, ja, null, 0, outXlsx);
 		System.out.println("共" + count + "条数据,执行" + (new Date().getTime() - d2.getTime()) + "ms");
 		outXlsx.close();
 

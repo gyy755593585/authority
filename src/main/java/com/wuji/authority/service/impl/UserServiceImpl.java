@@ -3,10 +3,12 @@
  */
 package com.wuji.authority.service.impl;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.wuji.authority.dao.RoleDao;
 import com.wuji.authority.dao.UserDao;
@@ -15,6 +17,7 @@ import com.wuji.authority.model.Role;
 import com.wuji.authority.model.User;
 import com.wuji.authority.model.UserRole;
 import com.wuji.authority.service.UserService;
+import com.wuji.authority.util.SecurityUtil;
 import com.wuji.basic.model.Pager;
 import com.wuji.basic.model.SystemException;
 
@@ -111,6 +114,34 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 			this.userRoleDao.add(userRole);
 		}
 		this.userDao.update(user);
+	}
+
+	/* (non-Javadoc)
+	 * @see com.wuji.authority.service.UserService#addUserByExcel(java.util.List)
+	 */
+	@Override
+	@Transactional
+	public void addUserByExcel(List<List<Object>> excelObject) throws NoSuchAlgorithmException {
+		String jmsg = "";
+		int length = excelObject.size();
+		this.logger.debug(String.valueOf(length));
+		User user = null;
+		for (int i = 0; i < length; i++) {
+			jmsg = String.format("第 %d/%d 行数据,", i, length);
+			user = new User();
+			List<Object> list = excelObject.get(i);
+			user.setUserName(list.get(0).toString());
+			User existUser = this.userDao.findByUserName(user.getUserName());
+			if (existUser != null) {
+				throw new SystemException("用户名称已存在" + jmsg);
+			}
+			user.setNickName(list.get(1).toString());
+			user.setSalt(SecurityUtil.getSalt());
+			user.setPassword(SecurityUtil.md5(user.getSalt(), list.get(2).toString()));
+			user.setType(1);
+			user.setStatus(0);
+			this.add(user);
+		}
 	}
 
 }

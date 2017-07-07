@@ -3,6 +3,7 @@
  */
 package com.wuji.authority.service;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import com.wuji.authority.model.User;
@@ -29,5 +30,11 @@ public interface UserService extends BaseService<User> {
 	Pager<User> findByPage();
 
 	void update(User user, List<Long> roleIds);
+
+	/**
+	 * @param excelObject
+	 * @throws NoSuchAlgorithmException
+	 */
+	void addUserByExcel(List<List<Object>> excelObject) throws NoSuchAlgorithmException;
 
 }

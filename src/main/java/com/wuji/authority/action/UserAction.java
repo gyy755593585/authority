@@ -13,6 +13,10 @@
 
 package com.wuji.authority.action;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -34,7 +38,8 @@ import com.wuji.authority.model.User;
 import com.wuji.authority.service.PermitService;
 import com.wuji.authority.service.RoleService;
 import com.wuji.authority.service.UserService;
-import com.wuji.authority.util.POIUtil;
+import com.wuji.authority.util.ExportExcelUtil;
+import com.wuji.authority.util.ImportExcelUtil;
 import com.wuji.authority.util.SecurityUtil;
 import com.wuji.authority.vo.Tree;
 import com.wuji.basic.model.Pager;
@@ -68,6 +73,26 @@ public class UserAction extends BaseAction implements ModelDriven<User> {
 	private Long id;
 
 	private List<Long> roleIds;
+
+	private File excelFile;// 与jsp页面的file标签的name属性一样
+
+	private String excelFileFileName;// File对象的名称+FileName,一定要这样写，不然名称获取不到
+
+	public File getExcelFile() {
+		return this.excelFile;
+	}
+
+	public void setExcelFile(File excelFile) {
+		this.excelFile = excelFile;
+	}
+
+	public String getExcelFileFileName() {
+		return this.excelFileFileName;
+	}
+
+	public void setExcelFileFileName(String excelFileFileName) {
+		this.excelFileFileName = excelFileFileName;
+	}
 
 	public List<Long> getRoleIds() {
 		return this.roleIds;
@@ -121,6 +146,15 @@ public class UserAction extends BaseAction implements ModelDriven<User> {
 	 *
 	 * @return
 	 */
+	public String excelUpload() {
+		return "excelUpload";
+	}
+
+	/**
+	 * 页面跳转
+	 *
+	 * @return
+	 */
 	public String userEdit() {
 		this.id = this.user.getId();
 		try {
@@ -143,9 +177,8 @@ public class UserAction extends BaseAction implements ModelDriven<User> {
 	 */
 	public void add() {
 		try {
-			String salt = UUID.randomUUID().toString().replaceAll("-", "");
-			this.user.setSalt(salt);
-			this.user.setPassword(SecurityUtil.md5(salt, this.user.getPassword()));
+			this.user.setSalt(SecurityUtil.getSalt());
+			this.user.setPassword(SecurityUtil.md5(this.user.getSalt(), this.user.getPassword()));
 			this.userService.add(this.user);
 			for (Long roleId : this.roleIds) {
 				Role sysRole = this.roleService.load(roleId);
@@ -252,7 +285,32 @@ public class UserAction extends BaseAction implements ModelDriven<User> {
 		headMap.put("password", "密码");
 		headMap.put("status", "状态");
 		headMap.put("type", "类型");
-		POIUtil.downloadExcelFile("users", headMap, ja, this.response);
+		ExportExcelUtil.downloadExcelFile("users", headMap, ja, this.response);
+	}
+
+	public void importExcel() {
+		FileInputStream fis = null;
+		try {
+
+			fis = new FileInputStream(this.excelFile);
+			List<List<Object>> excelObject = ImportExcelUtil.getBankListByExcel(fis, 2, this.excelFileFileName);
+			this.userService.addUserByExcel(excelObject);
+			super.writeJson(this.renderSuccess());
+		} catch (FileNotFoundException e) {
+			super.writeJson(this.renderError(e.getMessage()));
+			e.printStackTrace();
+		} catch (Exception e) {
+			super.writeJson(this.renderError(e.getMessage()));
+			e.printStackTrace();
+		} finally {
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 }

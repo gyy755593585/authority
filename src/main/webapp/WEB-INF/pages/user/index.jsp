@@ -85,9 +85,15 @@ $(function() {
 							}
 						}, '-' , {
 							text : '下载',
-							iconCls : 'icon-edit',
+							iconCls : 'icon-export',
 							handler : function() {
 								downLoad();
+							}
+						}, '-' , {
+							text : '上传',
+							iconCls : 'icon-import',
+							handler : function() {
+								excelUpload();
 							}
 						}, '-'],
 						columns : [ [ {
@@ -165,6 +171,41 @@ function edit() {
 	} else {
 		parent.dj.messagerAlert('提示', '请选择要编辑的记录！', 'error');
 	}
+}
+function excelUpload() {
+		var p = parent.dj
+				.dialog( {
+					title : '导入用户',
+					href : '${pageContext.request.contextPath}/userAction!excelUpload' ,
+					width : 600,
+					height : 450,
+					buttons : [ {
+						text : '导入',
+						handler : function() {
+							var f = p.find('form');
+							f
+									.form(
+											'submit',
+											{
+												url : '${pageContext.request.contextPath}/userAction!importExcel',
+												success : function(d) {
+													var json = $.parseJSON(d);
+													if (json.success) {
+														datagrid
+																.datagrid('reload');
+														p.dialog('close');
+													}
+													parent.dj.messagerShow( {
+														msg : json.msg,
+														title : '提示'
+													});
+												}
+											});
+						}
+					} ]
+					
+				});
+	
 }
 function append() {
 	var p = parent.$.modalDialog( {
