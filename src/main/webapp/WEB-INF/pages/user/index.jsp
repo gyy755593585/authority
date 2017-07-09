@@ -90,6 +90,12 @@ $(function() {
 								downLoad();
 							}
 						}, '-' , {
+							text : 'csv下载',
+							iconCls : 'icon-export',
+							handler : function() {
+								csvDownLoad();
+							}
+						}, '-' , {
 							text : '上传',
 							iconCls : 'icon-import',
 							handler : function() {
@@ -294,6 +300,9 @@ function changeStatus(rowIndex) {
 }
 function downLoad(){
 	window.open("userAction!exportUser","_blank");
+}
+function csvDownLoad(){
+	window.open("userAction!exportUserByCSV","_blank");
 }
 
 </script>

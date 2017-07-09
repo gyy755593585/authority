@@ -38,6 +38,7 @@ import com.wuji.authority.model.User;
 import com.wuji.authority.service.PermitService;
 import com.wuji.authority.service.RoleService;
 import com.wuji.authority.service.UserService;
+import com.wuji.authority.util.ExportCSVUtil;
 import com.wuji.authority.util.ExportExcelUtil;
 import com.wuji.authority.util.ImportExcelUtil;
 import com.wuji.authority.util.SecurityUtil;
@@ -286,6 +287,19 @@ public class UserAction extends BaseAction implements ModelDriven<User> {
 		headMap.put("status", "状态");
 		headMap.put("type", "类型");
 		ExportExcelUtil.downloadExcelFile("users", headMap, ja, this.response);
+	}
+
+	public void exportUserByCSV() {
+		List list = this.userService.findAll();
+		JSONArray ja = new JSONArray(list);
+		Map<String, String> headMap = new LinkedHashMap<String, String>();
+		headMap.put("userName", "姓名");
+		headMap.put("nickName", "昵称");
+		headMap.put("salt", "密码盐");
+		headMap.put("password", "密码");
+		headMap.put("status", "状态");
+		headMap.put("type", "类型");
+		ExportCSVUtil.downloadCSVFile("用户列表", headMap, ja, this.response);
 	}
 
 	public void importExcel() {
