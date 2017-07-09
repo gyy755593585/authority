@@ -241,7 +241,11 @@
 			<artifactId>commons-beanutils</artifactId>
 			<version>1.8.3</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-csv</artifactId>
+			<version>1.4</version>
+		</dependency>
 		<!-- ehcache和redis必选其一，也可同时使用（需要注意） -->
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
