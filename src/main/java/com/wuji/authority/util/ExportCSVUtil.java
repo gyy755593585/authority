@@ -120,9 +120,9 @@ public class ExportCSVUtil {
 			JSONArray jsonArray = new JSONArray(users);
 			System.out.println(jsonArray);
 			Map<String, String> headMap = new LinkedHashMap<String, String>();
-			headMap.put("userName", "姓名");
-			headMap.put("nickName", "昵称");
-			headMap.put("password", "密码");
+			headMap.put("userName", "userName");
+			headMap.put("nickName", "nickName");
+			headMap.put("password", "password");
 			exportCSV(headMap, jsonArray, out);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
