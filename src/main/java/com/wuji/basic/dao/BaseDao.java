@@ -51,7 +51,6 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	protected void setEditInfo(BaseModel model) {
 		Timestamp time = DateUtil.getNowFull();
 		model.setEditTime(time);
-		model.setCreateUser(this.getSystemRequest().getCurrentUser());
 		model.setEditUser(this.getSystemRequest().getCurrentUser());
 	}
 

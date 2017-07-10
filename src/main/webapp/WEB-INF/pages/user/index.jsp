@@ -101,6 +101,12 @@ $(function() {
 							handler : function() {
 								excelUpload();
 							}
+						},'-', {
+							text : '上传CSV',
+							iconCls : 'icon-import',
+							handler : function() {
+								csvUpload();
+							}
 						}, '-'],
 						columns : [ [ {
 							title : '操作',
@@ -194,6 +200,41 @@ function excelUpload() {
 											'submit',
 											{
 												url : '${pageContext.request.contextPath}/userAction!importExcel',
+												success : function(d) {
+													var json = $.parseJSON(d);
+													if (json.success) {
+														datagrid
+																.datagrid('reload');
+														p.dialog('close');
+													}
+													parent.dj.messagerShow( {
+														msg : json.msg,
+														title : '提示'
+													});
+												}
+											});
+						}
+					} ]
+					
+				});
+	
+}
+function csvUpload() {
+		var p = parent.dj
+				.dialog( {
+					title : '导入用户',
+					href : '${pageContext.request.contextPath}/userAction!csvUpload' ,
+					width : 600,
+					height : 450,
+					buttons : [ {
+						text : '导入',
+						handler : function() {
+							var f = p.find('form');
+							f
+									.form(
+											'submit',
+											{
+												url : '${pageContext.request.contextPath}/userAction!importCSV',
 												success : function(d) {
 													var json = $.parseJSON(d);
 													if (json.success) {

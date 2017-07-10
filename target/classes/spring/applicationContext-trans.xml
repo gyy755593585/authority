@@ -33,4 +33,5 @@
 		<aop:advisor advice-ref="txAdvice"
 			pointcut="execution(* com.wuji.authority.service.*.*(..))" />
 	</aop:config>
+	<tx:annotation-driven/>
 </beans>

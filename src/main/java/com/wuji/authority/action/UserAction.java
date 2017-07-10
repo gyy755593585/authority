@@ -40,6 +40,7 @@ import com.wuji.authority.service.RoleService;
 import com.wuji.authority.service.UserService;
 import com.wuji.authority.util.ExportCSVUtil;
 import com.wuji.authority.util.ExportExcelUtil;
+import com.wuji.authority.util.ImportCSVUtil;
 import com.wuji.authority.util.ImportExcelUtil;
 import com.wuji.authority.util.SecurityUtil;
 import com.wuji.authority.vo.Tree;
@@ -78,6 +79,26 @@ public class UserAction extends BaseAction implements ModelDriven<User> {
 	private File excelFile;// 与jsp页面的file标签的name属性一样
 
 	private String excelFileFileName;// File对象的名称+FileName,一定要这样写，不然名称获取不到
+
+	private File csvFile;// 与jsp页面的file标签的name属性一样
+
+	private String csvFileFileName;// File对象的名称+FileName,一定要这样写，不然名称获取不到
+
+	public File getCsvFile() {
+		return this.csvFile;
+	}
+
+	public void setCsvFile(File csvFile) {
+		this.csvFile = csvFile;
+	}
+
+	public String getCsvFileFileName() {
+		return this.csvFileFileName;
+	}
+
+	public void setCsvFileFileName(String csvFileFileName) {
+		this.csvFileFileName = csvFileFileName;
+	}
 
 	public File getExcelFile() {
 		return this.excelFile;
@@ -149,6 +170,15 @@ public class UserAction extends BaseAction implements ModelDriven<User> {
 	 */
 	public String excelUpload() {
 		return "excelUpload";
+	}
+
+	/**
+	 * 页面跳转
+	 *
+	 * @return
+	 */
+	public String csvUpload() {
+		return "csvUpload";
 	}
 
 	/**
@@ -308,6 +338,32 @@ public class UserAction extends BaseAction implements ModelDriven<User> {
 
 			fis = new FileInputStream(this.excelFile);
 			List<List<Object>> excelObject = ImportExcelUtil.getBankListByExcel(fis, 2, this.excelFileFileName);
+			this.userService.addUserByExcel(excelObject);
+			super.writeJson(this.renderSuccess());
+		} catch (FileNotFoundException e) {
+			super.writeJson(this.renderError(e.getMessage()));
+			e.printStackTrace();
+		} catch (Exception e) {
+			super.writeJson(this.renderError(e.getMessage()));
+			e.printStackTrace();
+		} finally {
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
+	public void importCSV() {
+		FileInputStream fis = null;
+		try {
+
+			fis = new FileInputStream(this.csvFile);
+			List<List<Object>> excelObject = ImportCSVUtil.importCSVUtil(fis,
+					new String[] { "userName", "nickName", "password" });
 			this.userService.addUserByExcel(excelObject);
 			super.writeJson(this.renderSuccess());
 		} catch (FileNotFoundException e) {
