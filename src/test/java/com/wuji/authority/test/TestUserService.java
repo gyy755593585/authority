@@ -71,7 +71,7 @@ public class TestUserService {
 	@Test
 	public void testAddRoleForUser() {
 		User user = this.userService.findByUserName("admin");
-		Role role = this.roleService.load(2L);
+		Role role = this.roleService.findAll().get(0);
 		this.roleService.addRoleForUser(user, role);
 	}
 
