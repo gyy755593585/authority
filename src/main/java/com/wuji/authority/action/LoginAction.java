@@ -13,27 +13,24 @@
 
 package com.wuji.authority.action;
 
-import java.security.NoSuchAlgorithmException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.DisabledAccountException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.opensymphony.xwork2.ModelDriven;
-import com.wuji.authority.model.Permit;
-import com.wuji.authority.model.Role;
 import com.wuji.authority.model.User;
-import com.wuji.authority.service.PermitService;
-import com.wuji.authority.service.RoleService;
 import com.wuji.authority.service.UserService;
-import com.wuji.authority.util.SecurityUtil;
-import com.wuji.authority.vo.ActivityUser;
+import com.wuji.authority.shiro.UserRealm;
 
 /**
  * @author Yayun
@@ -54,12 +51,8 @@ public class LoginAction extends BaseAction implements ModelDriven<User> {
 
 	@Autowired
 	private UserService userService;
-
 	@Autowired
-	private RoleService roleService;
-
-	@Autowired
-	private PermitService permitService;
+	private UserRealm userRealm;
 
 	private User user = new User();
 
@@ -118,61 +111,33 @@ public class LoginAction extends BaseAction implements ModelDriven<User> {
 		if (StringUtils.isBlank(this.user.getPassword())) {
 			throw new RuntimeException("密码不能为空");
 		}
-		User loginUser = this.userService.findByUserName(this.user.getUserName());
-		if (loginUser == null) {
+		Subject user = SecurityUtils.getSubject();
+		UsernamePasswordToken token = new UsernamePasswordToken(this.user.getUserName(), this.user.getPassword());
+		try {
+			user.login(token);
+			this.writeJson(this.renderSuccess());
+		} catch (UnknownAccountException e) {
 			this.writeJson(this.renderError("账号不存在！"));
-			throw new RuntimeException("账号不存在！");
-		} else {
-			try {
-				if (!SecurityUtil.md5(loginUser.getSalt(), this.user.getPassword()).equals(loginUser.getPassword())) {
-					this.writeJson(this.renderError("账号或密码错误！"));
-					throw new RuntimeException("账号或密码错误！");
-				} else if (loginUser.getStatus() == 1) {
-					this.writeJson(this.renderError("账号未启用！"));
-					throw new RuntimeException("账号未启用！");
-				}
-			} catch (NoSuchAlgorithmException e) {
-				e.printStackTrace();
-			}
+			throw new RuntimeException("账号不存在！", e);
+		} catch (DisabledAccountException e) {
+			this.writeJson(this.renderError("账号未启用！"));
+			throw new RuntimeException("账号未启用！", e);
+		} catch (IncorrectCredentialsException e) {
+			this.writeJson(this.renderError("账号或密码错误！"));
+			throw new RuntimeException("密码错误！", e);
+		} catch (Throwable e) {
+			throw new RuntimeException(e.getMessage(), e);
 		}
-		// 放入Session中用户对象
-		ActivityUser activityUser = new ActivityUser(this.user.getUserName());
-		activityUser.setName(loginUser.getNickName());
-		activityUser.setId(loginUser.getId());
-		List<Role> roleList = this.roleService.findRoleByUserName(this.user.getUserName());
-		// 用户所有角色名
-		Set<String> roles = new HashSet<>();
-		// 用户允许被访问的URL
-		Set<String> permits = new HashSet<>();
-		for (Role role : roleList) {
-			// 判断角色是否为admin
-			if (role.getType() == 1) {
-				activityUser.setAdmin(true);
-				// break;
-			}
-			// 根据角色获取用户系统和对应的权限
-			List<Permit> permitList = this.permitService.findPermitByRoleId(role.getId());
-			for (Permit systemPermit2 : permitList) {
-				String permitCode = systemPermit2.getPermitCode();
-				this.logger.info(permitCode);
-				permits.add(permitCode);
 
-			}
-			roles.add(role.getRoleName());
-		}
-		if (activityUser.isAdmin()) {
-
-		}
-		activityUser.setPermitCodes(permits);
-		activityUser.setRoles(roles);
-		// activityUser.setRolePermit(systemPermit);
-		this.session.put("activityUser", activityUser);
-		this.writeJson(this.renderSuccess());
 		return "index";
 	}
 
 	public void logout() {
-		this.httpSession.invalidate();
+		this.logger.info("登出");
+		Subject subject = SecurityUtils.getSubject();
+		subject.logout();
+		// this.httpSession.invalidate();
+		this.userRealm.clearAllCache();
 		this.login();
 	}
 
@@ -201,10 +166,9 @@ public class LoginAction extends BaseAction implements ModelDriven<User> {
 		try {
 			User curUser = this.userService.load(this.user.getId());
 			curUser.setNickName(this.user.getNickName());
+			curUser.setPassword(null);
 			if (StringUtils.isNotBlank(this.user.getPassword())) {
-				String salt = UUID.randomUUID().toString().replaceAll("-", "");
-				curUser.setSalt(salt);
-				curUser.setPassword(SecurityUtil.md5(salt, this.user.getPassword()));
+				curUser.setPassword(this.user.getPassword());
 			}
 			this.userService.update(curUser);
 			this.writeJson(this.renderSuccess("用户修改成功"));

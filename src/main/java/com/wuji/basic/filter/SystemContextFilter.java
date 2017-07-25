@@ -12,6 +12,9 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.wuji.authority.util.GlobalConstant;
 import com.wuji.authority.vo.ActivityUser;
 import com.wuji.basic.model.SystemRequest;
 import com.wuji.basic.model.SystemRequestHolder;
@@ -47,22 +50,26 @@ public class SystemContextFilter implements Filter {
 		int rows = 10;
 		try {
 			try {
-				rows = Integer.parseInt(request.getParameter("rows"));
-				page = Integer.parseInt(request.getParameter("page"));
+				rows = Integer.parseInt(request.getParameter(GlobalConstant.ROWS));
+				page = Integer.parseInt(request.getParameter(GlobalConstant.PAGE));
 			} catch (NumberFormatException e) {
 			}
 			HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 			HttpSession session = httpServletRequest.getSession(false);
 			SystemRequest systemRequest = new SystemRequest();
 			if (session != null) {
-				ActivityUser activityUser = (ActivityUser) session.getAttribute("activityUser");
+				ActivityUser activityUser = (ActivityUser) session.getAttribute(GlobalConstant.ACTIVITY_USER);
 				if (activityUser != null) {
 					systemRequest.setCurrentUser(activityUser.getLoginName());
 				}
 			}
+			if (StringUtils.isBlank(systemRequest.getCurrentUser())) {
+				systemRequest.setCurrentUser(GlobalConstant.DEFAULT_CURRENT_USER);
+			}
 			int pageOffset = (page - 1) * rows;
 			systemRequest.setPageOffset(pageOffset);
 			systemRequest.setPageSize(rows);
+			systemRequest.setRequest(httpServletRequest);
 			SystemRequestHolder.initRequestHolder(systemRequest);
 			chain.doFilter(request, response);
 		} finally {

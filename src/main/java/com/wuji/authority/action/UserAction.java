@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -42,7 +41,6 @@ import com.wuji.authority.util.ExportCSVUtil;
 import com.wuji.authority.util.ExportExcelUtil;
 import com.wuji.authority.util.ImportCSVUtil;
 import com.wuji.authority.util.ImportExcelUtil;
-import com.wuji.authority.util.SecurityUtil;
 import com.wuji.authority.vo.Tree;
 import com.wuji.basic.model.Pager;
 
@@ -208,8 +206,6 @@ public class UserAction extends BaseAction implements ModelDriven<User> {
 	 */
 	public void add() {
 		try {
-			this.user.setSalt(SecurityUtil.getSalt());
-			this.user.setPassword(SecurityUtil.md5(this.user.getSalt(), this.user.getPassword()));
 			this.userService.add(this.user);
 			for (Long roleId : this.roleIds) {
 				Role sysRole = this.roleService.load(roleId);
@@ -230,10 +226,9 @@ public class UserAction extends BaseAction implements ModelDriven<User> {
 			sysUser.setNickName(this.user.getNickName());
 			sysUser.setStatus(this.user.getStatus());
 			sysUser.setType(this.user.getType());
+			sysUser.setPassword(null);
 			if (StringUtils.isNotBlank(this.user.getPassword())) {
-				String salt = UUID.randomUUID().toString().replaceAll("-", "");
-				sysUser.setSalt(salt);
-				sysUser.setPassword(SecurityUtil.md5(salt, this.user.getPassword()));
+				sysUser.setPassword(this.user.getPassword());
 			}
 			this.logger.info(this.roleIds.get(0).toString());
 			this.userService.update(sysUser, this.roleIds);

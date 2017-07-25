@@ -17,6 +17,7 @@ import com.wuji.authority.model.Role;
 import com.wuji.authority.model.User;
 import com.wuji.authority.model.UserRole;
 import com.wuji.authority.service.UserService;
+import com.wuji.authority.shiro.PasswordHelper;
 import com.wuji.authority.util.SecurityUtil;
 import com.wuji.basic.model.Pager;
 import com.wuji.basic.model.SystemException;
@@ -36,8 +37,12 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 
 	@Autowired
 	private UserRoleDao userRoleDao;
+	@Autowired
+	private PasswordHelper passwordHelper;
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see com.wuji.basic.service.BaseService#add(java.lang.Object)
 	 */
 	@Override
@@ -46,18 +51,24 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		if (existUser != null) {
 			throw new SystemException("用户名称已存在");
 		}
+		this.passwordHelper.encryptPassword(user);
 		return this.userDao.add(user);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see com.wuji.basic.service.BaseService#update(java.lang.Object)
 	 */
 	@Override
 	public void update(User user) {
+		this.passwordHelper.encryptPassword(user);
 		this.userDao.update(user);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see com.wuji.basic.service.BaseService#delete(java.lang.Long)
 	 */
 	@Override
@@ -66,7 +77,9 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		this.userDao.delete(id);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see com.wuji.basic.service.BaseService#load(java.lang.Long)
 	 */
 	@Override
@@ -74,7 +87,9 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		return this.userDao.load(id);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see com.wuji.basic.service.BaseService#findAll()
 	 */
 	@Override
@@ -82,15 +97,20 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		return this.userDao.findAll();
 	}
 
-	/* (non-Javadoc)
-	 * @see com.wuji.authority.service.UserService#findByUserName(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * com.wuji.authority.service.UserService#findByUserName(java.lang.String)
 	 */
 	@Override
 	public User findByUserName(String userName) {
 		return this.userDao.findByUserName(userName);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see com.wuji.authority.service.UserService#findByPage()
 	 */
 	@Override
@@ -99,8 +119,12 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		return result;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.wuji.authority.service.UserService#update(com.wuji.authority.model.User, java.util.List)
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * com.wuji.authority.service.UserService#update(com.wuji.authority.model.
+	 * User, java.util.List)
 	 */
 	@Override
 	public void update(User user, List<Long> roleIds) {
@@ -113,11 +137,17 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 			userRole.setUser(user);
 			this.userRoleDao.add(userRole);
 		}
+		if (user.getPassword() != null) {
+			this.passwordHelper.encryptPassword(user);
+		}
 		this.userDao.update(user);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.wuji.authority.service.UserService#addUserByExcel(java.util.List)
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * com.wuji.authority.service.UserService#addUserByExcel(java.util.List)
 	 */
 	@Override
 	@Transactional

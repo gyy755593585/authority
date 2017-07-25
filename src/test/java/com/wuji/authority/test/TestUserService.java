@@ -4,7 +4,6 @@
 package com.wuji.authority.test;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +18,6 @@ import com.wuji.authority.model.User;
 import com.wuji.authority.service.PermitService;
 import com.wuji.authority.service.RoleService;
 import com.wuji.authority.service.UserService;
-import com.wuji.authority.util.SecurityUtil;
 import com.wuji.basic.model.SystemRequest;
 import com.wuji.basic.model.SystemRequestHolder;
 
@@ -51,12 +49,10 @@ public class TestUserService {
 	public void testUserAdd() throws NoSuchAlgorithmException {
 		User user = new User();
 		user.setUserName("admin");
-		String salt = UUID.randomUUID().toString().replaceAll("-", "");
 		user.setNickName("管理员");
 		user.setStatus(0);
 		user.setType(1);
-		user.setSalt(salt);
-		user.setPassword(SecurityUtil.md5(salt, "test"));
+		user.setPassword("test");
 		this.userService.add(user);
 	}
 
