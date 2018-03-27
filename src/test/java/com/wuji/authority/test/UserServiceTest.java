@@ -81,8 +81,8 @@ public class UserServiceTest {
 
 	@Test
 	public void testAddPeritForRole() {
-		Permit permit = this.permitService.load(4L);
-		Role role = this.roleService.load(2L);
+		Permit permit = this.permitService.load(1L);
+		Role role = this.roleService.load(1L);
 		this.permitService.addPermitForRole(role, permit);
 	}
 }
