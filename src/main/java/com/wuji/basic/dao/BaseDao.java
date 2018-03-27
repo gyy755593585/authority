@@ -6,8 +6,10 @@ package com.wuji.basic.dao;
 import java.lang.reflect.ParameterizedType;
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -281,7 +283,6 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		return hql;
 	}
 
-	@SuppressWarnings("rawtypes")
 	private void setAliasParameter(Query<?> query, Map<String, Object> alias) {
 		if (alias != null) {
 			Set<String> keys = alias.keySet();
