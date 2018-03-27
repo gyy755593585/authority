@@ -2,17 +2,17 @@ package com.wuji.basic.model;
 
 public class SystemRequestHolder {
 
-	private final static ThreadLocal<SystemRequest> systemRequesthreadLocal = new ThreadLocal<SystemRequest>();
+	private final static ThreadLocal<SystemRequest> SYSTEM_REQUEST_THREADLOCAL = new ThreadLocal<SystemRequest>();
 
 	public static void initRequestHolder(SystemRequest systemRequest) {
-		systemRequesthreadLocal.set(systemRequest);
+		SYSTEM_REQUEST_THREADLOCAL.set(systemRequest);
 	}
 
 	public static SystemRequest getSystemRequest() {
-		return systemRequesthreadLocal.get();
+		return SYSTEM_REQUEST_THREADLOCAL.get();
 	}
 
 	public static void remove() {
-		systemRequesthreadLocal.remove();
+		SYSTEM_REQUEST_THREADLOCAL.remove();
 	}
 }

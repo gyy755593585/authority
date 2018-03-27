@@ -22,8 +22,8 @@ import java.util.List;
 public class SystemConst {
 
 	public static final List<String> EXCEL_FILE_TYPE = Arrays.asList("xls", "xlsx");
-
-	public final static String EXCEL_2003L = ".xls"; // 2003- 版本的excel
-
-	public final static String EXCEL_2007U = ".xlsx"; // 2007+ 版本的excel
+	// 2003- 版本的excel
+	public final static String EXCEL_2003L = ".xls";
+	// 2007+ 版本的excel
+	public final static String EXCEL_2007U = ".xlsx";
 }

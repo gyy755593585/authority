@@ -73,14 +73,14 @@ public class UserAction extends BaseAction implements ModelDriven<User> {
 	private Long id;
 
 	private List<Long> roleIds;
-
-	private File excelFile;// 与jsp页面的file标签的name属性一样
-
-	private String excelFileFileName;// File对象的名称+FileName,一定要这样写，不然名称获取不到
-
-	private File csvFile;// 与jsp页面的file标签的name属性一样
-
-	private String csvFileFileName;// File对象的名称+FileName,一定要这样写，不然名称获取不到
+	// 与jsp页面的file标签的name属性一样
+	private File excelFile;
+	// File对象的名称+FileName,一定要这样写，不然名称获取不到
+	private String excelFileFileName;
+	// 与jsp页面的file标签的name属性一样
+	private File csvFile;
+	// File对象的名称+FileName,一定要这样写，不然名称获取不到
+	private String csvFileFileName;
 
 	public File getCsvFile() {
 		return this.csvFile;

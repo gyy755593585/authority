@@ -7,6 +7,11 @@ import org.apache.shiro.util.ByteSource;
 
 import com.wuji.authority.model.User;
 
+/**
+ *
+ * @author yayun.gao
+ *
+ */
 public class PasswordHelper {
 
 	private RandomNumberGenerator randomNumberGenerator = new SecureRandomNumberGenerator();

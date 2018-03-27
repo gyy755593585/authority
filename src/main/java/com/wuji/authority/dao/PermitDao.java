@@ -25,10 +25,25 @@ import com.wuji.basic.model.Pager;
  *
  */
 public interface PermitDao extends IBaseDao<Permit> {
-
+	/**
+	 *
+	 * @return 分页permit对象
+	 */
 	Pager<Permit> findByPage();
 
+	/**
+	 * 判断是否有子节点
+	 *
+	 * @param id
+	 * @return
+	 */
 	boolean hasChild(Long id);
 
+	/**
+	 * 通过pid
+	 * 
+	 * @param id
+	 * @return
+	 */
 	List<Permit> findByPid(Long id);
 }

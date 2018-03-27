@@ -27,7 +27,7 @@ import com.wuji.basic.model.SystemRequestHolder;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:/spring/applicationContext-*.xml")
-public class TestUserService {
+public class UserServiceTest {
 
 	@Autowired
 	private UserService userService;

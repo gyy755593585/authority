@@ -29,7 +29,7 @@ public class DateUtil {
 
 	public static final String TIME_PATTREN_COMPACTED = "yyyyMMddhhmmss";
 
-	public static final String TIME_PATTREN_SHORT = "MMddhhmmss";// MMDDhhmmss
+	public static final String TIME_PATTREN_SHORT = "MMddhhmmss";
 
 	public static Logger logger = LoggerFactory.getLogger(DateUtil.class);
 
@@ -92,9 +92,12 @@ public class DateUtil {
 	/**
 	 * 对一个日期的某一部分加减操作
 	 *
-	 * @param date 日期
-	 * @param partOfDate 年，月，日对应的整数
-	 * @param increment 增量
+	 * @param date
+	 *            日期
+	 * @param partOfDate
+	 *            年，月，日对应的整数
+	 * @param increment
+	 *            增量
 	 * @return
 	 */
 	public static Date operationDate(Date date, int partOfDate, int increment) {
@@ -113,8 +116,10 @@ public class DateUtil {
 	/**
 	 * 根据开始日期和结束日期求出时间范围的集合
 	 *
-	 * @param startTime 开始日期
-	 * @param endTime 结束日期
+	 * @param startTime
+	 *            开始日期
+	 * @param endTime
+	 *            结束日期
 	 * @return List<Date>
 	 */
 	public static List<Date> getThePeriodOfTwoDates(Date startTime, Date endTime) {

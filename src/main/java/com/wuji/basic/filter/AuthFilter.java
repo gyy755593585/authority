@@ -56,13 +56,15 @@ public class AuthFilter implements Filter {
 			HttpSession session = httpServletRequest.getSession(false);
 			if (session == null || session.getAttribute("activityUser") == null) {
 				// *用户登录以后需手动添加session
-				httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/login.jsp");// 如果session为空表示用户没有登录就重定向到login.jsp页面
+				// 如果session为空表示用户没有登录就重定向到login.jsp页面
+				httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/login.jsp");
 				return;
 			}
 		}
 		if (targetURL.equals("/login.jsp") && httpServletRequest.getSession(false) != null
 				&& httpServletRequest.getSession(false).getAttribute("activityUser") != null) {
-			httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/index.jsp");// 如果session不为空表示用户没有登录就重定向到index.jsp页面
+			// 如果session不为空表示用户没有登录就重定向到index.jsp页面
+			httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/index.jsp");
 			return;
 		}
 		chain.doFilter(request, response);

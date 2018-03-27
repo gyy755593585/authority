@@ -6,10 +6,8 @@ package com.wuji.basic.dao;
 import java.lang.reflect.ParameterizedType;
 import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -109,7 +107,9 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		return (T) this.getHibernateTemplate().load(this.getClz(), id);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see com.wuji.basic.dao.IBaseDao#findAll()
 	 */
 	@Override
@@ -130,7 +130,8 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		return query.list();
 	}
 
-	// public List<Object[]> listObjArray(String hql,Object[] args,Map<String,Object> alias) {
+	// public List<Object[]> listObjArray(String hql,Object[]
+	// args,Map<String,Object> alias) {
 	// hql = initSort(hql);
 	// Query query = getSession().createQuery(hql);
 	// setAliasParameter(query, alias);
@@ -146,8 +147,12 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		return query.list();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.konghao.baisc.dao.IBaseDao#find(java.lang.String, java.lang.Object[], java.util.Map)
+	/**
+	 *
+	 * @param hql
+	 * @param alias
+	 * @param args
+	 * @return
 	 */
 	public Pager<T> find(String hql, Map<String, Object> alias, Object... args) {
 		hql = this.initSort(hql);
@@ -187,8 +192,11 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		return pages;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.konghao.baisc.dao.IBaseDao#updateByHql(java.lang.String, java.lang.Object[])
+	/**
+	 *
+	 * @param hql
+	 * @param alias
+	 * @return
 	 */
 	public void updateByHql(String hql, Object... args) {
 		Query<?> query = this.currentSession().createQuery(hql);
@@ -298,8 +306,11 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.konghao.baisc.dao.IBaseDao#list(java.lang.String, java.util.Map)
+	/**
+	 *
+	 * @param hql
+	 * @param alias
+	 * @return
 	 */
 	public List<T> listByAlias(String hql, Map<String, Object> alias) {
 		return this.list(hql, null, alias);
@@ -329,21 +340,28 @@ public class BaseDao<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		return c;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see org.konghao.baisc.dao.IBaseDao#find(java.lang.String, java.util.Map)
 	 */
 	public Pager<T> findByAlias(String hql, Map<String, Object> alias) {
 		return this.find(hql, null, alias);
 	}
 
-	public <N extends Object> List<N> listByAliasSql(String sql, Map<String, Object> alias, Class<?> clz, boolean hasEntity) {
+	public <N extends Object> List<N> listByAliasSql(String sql, Map<String, Object> alias, Class<?> clz,
+			boolean hasEntity) {
 		return this.listBySql(sql, alias, clz, hasEntity);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.konghao.baisc.dao.IBaseDao#findBySql(java.lang.String, java.util.Map, java.lang.Class, boolean)
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.konghao.baisc.dao.IBaseDao#findBySql(java.lang.String,
+	 * java.util.Map, java.lang.Class, boolean)
 	 */
-	public <N extends Object> Pager<N> findByAliasSql(String sql, Map<String, Object> alias, Class<?> clz, boolean hasEntity) {
+	public <N extends Object> Pager<N> findByAliasSql(String sql, Map<String, Object> alias, Class<?> clz,
+			boolean hasEntity) {
 		return this.findBySql(sql, alias, clz, hasEntity);
 	}
 

@@ -26,8 +26,6 @@ import org.springframework.stereotype.Controller;
 import com.opensymphony.xwork2.ModelDriven;
 import com.wuji.authority.model.Permit;
 import com.wuji.authority.service.PermitService;
-import com.wuji.authority.service.RoleService;
-import com.wuji.authority.service.UserService;
 import com.wuji.authority.vo.PermitVo;
 import com.wuji.authority.vo.Tree;
 
@@ -44,12 +42,6 @@ public class PermitAction extends BaseAction implements ModelDriven<Permit> {
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
-
-	@Autowired
-	private UserService userService;
-
-	@Autowired
-	private RoleService roleService;
 
 	@Autowired
 	private PermitService permitService;

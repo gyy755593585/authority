@@ -33,6 +33,8 @@ import com.wuji.authority.service.UserService;
 import com.wuji.authority.shiro.UserRealm;
 
 /**
+ * 登录action 匿名用户可以访问
+ *
  * @author Yayun
  *
  */

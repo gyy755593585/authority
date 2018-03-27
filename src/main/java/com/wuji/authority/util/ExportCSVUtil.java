@@ -66,17 +66,17 @@ public class ExportCSVUtil {
 		CSVPrinter printer = null;
 		try {
 			Set<Entry<String, String>> entrySet = headMap.entrySet();
-			String[] file_header = new String[headMap.size()];
+			String[] filesHeader = new String[headMap.size()];
 			String[] field = new String[headMap.size()];
 			int index = 0;
 			for (Entry<String, String> entry : entrySet) {
 				field[index] = entry.getKey();
-				file_header[index] = entry.getValue();
+				filesHeader[index] = entry.getValue();
 				index++;
 			}
 			// Writer out = new FileWriter(title);
 			// 这里显式地配置一下CSV文件的Header，然后设置跳过Header（要不然读的时候会把头也当成一条记录）
-			CSVFormat format = CSVFormat.EXCEL.withHeader(file_header);
+			CSVFormat format = CSVFormat.EXCEL.withHeader(filesHeader);
 			printer = new CSVPrinter(out, format);
 			for (Object obj : jsonArray) {
 				JSONObject json = (JSONObject) JSONObject.toJSON(obj);

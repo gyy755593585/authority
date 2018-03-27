@@ -62,11 +62,13 @@ public class UserRealm extends AuthorizingRealm {
 		User loginUser = this.userService.findByUserName(username);
 
 		if (loginUser == null) {
-			throw new UnknownAccountException();// 没找到帐号
+			// 没找到帐号
+			throw new UnknownAccountException();
 		}
 
 		if (Boolean.TRUE.equals(loginUser.getStatus())) {
-			throw new LockedAccountException(); // 帐号锁定
+			// 帐号锁定
+			throw new LockedAccountException();
 		}
 
 		// 放入Session中用户对象
@@ -99,11 +101,8 @@ public class UserRealm extends AuthorizingRealm {
 		activityUser.setPermitCodes(permits);
 		activityUser.setRoles(roles);
 		// 交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以自定义实现
-		SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(activityUser, // 用户名
-				loginUser.getPassword(), // 密码
-				ByteSource.Util.bytes(loginUser.getSalt()), // salt=username+salt
-				this.getName() // realm name
-		);
+		SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(activityUser,
+				loginUser.getPassword(), ByteSource.Util.bytes(loginUser.getSalt()), this.getName());
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpSession session = request.getSession();
 		session.setAttribute(GlobalConstant.ACTIVITY_USER, activityUser);

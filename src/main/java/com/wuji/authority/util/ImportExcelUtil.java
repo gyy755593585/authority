@@ -42,7 +42,8 @@ public class ImportExcelUtil {
 	 * @return
 	 * @throws IOException
 	 */
-	public static List<List<Object>> getBankListByExcel(InputStream in, int titleLength, String fileName) throws Exception {
+	public static List<List<Object>> getBankListByExcel(InputStream in, int titleLength, String fileName)
+			throws Exception {
 		List<List<Object>> list = null;
 
 		// 创建Excel工作薄
@@ -96,9 +97,11 @@ public class ImportExcelUtil {
 		Workbook wb = null;
 		String fileType = fileName.substring(fileName.lastIndexOf("."));
 		if (SystemConst.EXCEL_2003L.equals(fileType)) {
-			wb = new HSSFWorkbook(inStr); // 2003-
+			// 2003-
+			wb = new HSSFWorkbook(inStr);
 		} else if (SystemConst.EXCEL_2007U.equals(fileType)) {
-			wb = new XSSFWorkbook(inStr); // 2007+
+			// 2007+
+			wb = new XSSFWorkbook(inStr);
 		} else {
 			throw new SystemException("解析的文件格式有误！");
 		}
@@ -113,31 +116,34 @@ public class ImportExcelUtil {
 	 */
 	public static Object getCellValue(Cell cell) {
 		Object value = null;
-		DecimalFormat df = new DecimalFormat("0"); // 格式化number String字符
-		SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd"); // 日期格式化
-		DecimalFormat df2 = new DecimalFormat("0.00"); // 格式化数字
+		// 格式化number String字符
+		DecimalFormat df = new DecimalFormat("0");
+		// 日期格式化
+		SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
+		// 格式化数字
+		DecimalFormat df2 = new DecimalFormat("0.00");
 
 		switch (cell.getCellTypeEnum()) {
-			case STRING:
-				value = cell.getRichStringCellValue().getString();
-				break;
-			case NUMERIC:
-				if ("General".equals(cell.getCellStyle().getDataFormatString())) {
-					value = df.format(cell.getNumericCellValue());
-				} else if ("m/d/yy".equals(cell.getCellStyle().getDataFormatString())) {
-					value = sdf.format(cell.getDateCellValue());
-				} else {
-					value = df2.format(cell.getNumericCellValue());
-				}
-				break;
-			case BOOLEAN:
-				value = cell.getBooleanCellValue();
-				break;
-			case BLANK:
-				value = "";
-				break;
-			default:
-				break;
+		case STRING:
+			value = cell.getRichStringCellValue().getString();
+			break;
+		case NUMERIC:
+			if ("General".equals(cell.getCellStyle().getDataFormatString())) {
+				value = df.format(cell.getNumericCellValue());
+			} else if ("m/d/yy".equals(cell.getCellStyle().getDataFormatString())) {
+				value = sdf.format(cell.getDateCellValue());
+			} else {
+				value = df2.format(cell.getNumericCellValue());
+			}
+			break;
+		case BOOLEAN:
+			value = cell.getBooleanCellValue();
+			break;
+		case BLANK:
+			value = "";
+			break;
+		default:
+			break;
 		}
 		return value;
 	}

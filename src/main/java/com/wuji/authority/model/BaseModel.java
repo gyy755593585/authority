@@ -4,6 +4,11 @@ import java.sql.Timestamp;
 
 import com.wuji.authority.util.DateUtil;
 
+/**
+ *
+ * @author yayun.gao
+ *
+ */
 public abstract class BaseModel {
 
 	private Timestamp createTime;

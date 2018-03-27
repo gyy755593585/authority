@@ -56,23 +56,36 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
+/**
+ *
+ * @author yayun.gao
+ *
+ */
 public class ExportExcelUtil {
 
-	public static String NO_DEFINE = "no_define";// 未定义的字段
+	// 未定义的字段
+	public static String NO_DEFINE = "no_define";
 
-	public static String DEFAULT_DATE_PATTERN = "yyyy年MM月dd日";// 默认日期格式
+	// 默认日期格式
+	public static String DEFAULT_DATE_PATTERN = "yyyy年MM月dd日";
 
 	public static int DEFAULT_COLOUMN_WIDTH = 17;
 
 	/**
 	 * 导出Excel 97(.xls)格式 ，少量数据
 	 *
-	 * @param title 标题行
-	 * @param headMap 属性-列名
-	 * @param jsonArray 数据集
-	 * @param datePattern 日期格式，null则用默认日期格式
-	 * @param colWidth 列宽 默认 至少17个字节
-	 * @param out 输出流
+	 * @param title
+	 *            标题行
+	 * @param headMap
+	 *            属性-列名
+	 * @param jsonArray
+	 *            数据集
+	 * @param datePattern
+	 *            日期格式，null则用默认日期格式
+	 * @param colWidth
+	 *            列宽 默认 至少17个字节
+	 * @param out
+	 *            输出流
 	 */
 	public static void exportExcel(String title, Map<String, String> headMap, JSONArray jsonArray, String datePattern,
 			int colWidth, OutputStream out) {
@@ -84,12 +97,19 @@ public class ExportExcelUtil {
 		workbook.createInformationProperties();
 		workbook.getDocumentSummaryInformation().setCompany("*****公司");
 		SummaryInformation si = workbook.getSummaryInformation();
-		si.setAuthor("JACK"); // 填加xls文件作者信息
-		si.setApplicationName("导出程序"); // 填加xls文件创建程序信息
-		si.setLastAuthor("最后保存者信息"); // 填加xls文件最后保存者信息
-		si.setComments("JACK is a programmer!"); // 填加xls文件作者信息
-		si.setTitle("POI导出Excel"); // 填加xls文件标题信息
-		si.setSubject("POI导出Excel");// 填加文件主题信息
+
+		// 填加xls文件作者信息
+		si.setAuthor("JACK");
+		// 填加xls文件创建程序信息
+		si.setApplicationName("导出程序");
+		// 填加xls文件最后保存者信息
+		si.setLastAuthor("最后保存者信息");
+		// 填加xls文件作者信息
+		si.setComments("JACK is a programmer!");
+		// 填加xls文件标题信息
+		si.setTitle("POI导出Excel");
+		// 填加文件主题信息
+		si.setSubject("POI导出Excel");
 		si.setCreateDateTime(new Date());
 		// 表头样式
 		HSSFCellStyle titleStyle = workbook.createCellStyle();
@@ -133,7 +153,8 @@ public class ExportExcelUtil {
 		// 设置注释作者，当鼠标移动到单元格上是可以在状态栏中看到该内容.
 		comment.setAuthor("JACK");
 		// 设置列宽
-		int minBytes = colWidth < DEFAULT_COLOUMN_WIDTH ? DEFAULT_COLOUMN_WIDTH : colWidth;// 至少字节数
+		// 至少字节数
+		int minBytes = colWidth < DEFAULT_COLOUMN_WIDTH ? DEFAULT_COLOUMN_WIDTH : colWidth;
 		int[] arrColWidth = new int[headMap.size()];
 		// 产生表格标题行,以及设置列宽
 		String[] properties = new String[headMap.size()];
@@ -155,21 +176,23 @@ public class ExportExcelUtil {
 		for (Object obj : jsonArray) {
 			if (rowIndex == 65535 || rowIndex == 0) {
 				if (rowIndex != 0) {
-					sheet = workbook.createSheet();// 如果数据超过了，则在第二页显示
+					// 如果数据超过了，则在第二页显示
+					sheet = workbook.createSheet();
 				}
-
-				HSSFRow titleRow = sheet.createRow(0);// 表头 rowIndex=0
+				// 表头 rowIndex=0
+				HSSFRow titleRow = sheet.createRow(0);
 				titleRow.createCell(0).setCellValue(title);
 				titleRow.getCell(0).setCellStyle(titleStyle);
 				sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, headMap.size() - 1));
-
-				HSSFRow headerRow = sheet.createRow(1); // 列头 rowIndex =1
+				// 列头 rowIndex =1
+				HSSFRow headerRow = sheet.createRow(1);
 				for (int i = 0; i < headers.length; i++) {
 					headerRow.createCell(i).setCellValue(headers[i]);
 					headerRow.getCell(i).setCellStyle(headerStyle);
 
 				}
-				rowIndex = 2;// 数据内容从 rowIndex=2开始
+				// 数据内容从 rowIndex=2开始
+				rowIndex = 2;
 			}
 			JSONObject jo = (JSONObject) JSONObject.toJSON(obj);
 			HSSFRow dataRow = sheet.createRow(rowIndex);
@@ -192,9 +215,9 @@ public class ExportExcelUtil {
 			rowIndex++;
 		}
 		// 自动调整宽度
-		/*for (int i = 0; i < headers.length; i++) {
-		    sheet.autoSizeColumn(i);
-		}*/
+		/*
+		 * for (int i = 0; i < headers.length; i++) { sheet.autoSizeColumn(i); }
+		 */
 		try {
 			workbook.write(out);
 			workbook.close();
@@ -206,12 +229,18 @@ public class ExportExcelUtil {
 	/**
 	 * 导出Excel 2007 OOXML (.xlsx)格式
 	 *
-	 * @param title 标题行
-	 * @param headMap 属性-列头
-	 * @param jsonArray 数据集
-	 * @param datePattern 日期格式，传null值则默认 年月日
-	 * @param colWidth 列宽 默认 至少17个字节
-	 * @param out 输出流
+	 * @param title
+	 *            标题行
+	 * @param headMap
+	 *            属性-列头
+	 * @param jsonArray
+	 *            数据集
+	 * @param datePattern
+	 *            日期格式，传null值则默认 年月日
+	 * @param colWidth
+	 *            列宽 默认 至少17个字节
+	 * @param out
+	 *            输出流
 	 */
 	public static void exportExcelX(String title, Map<String, String> headMap, JSONArray jsonArray, String datePattern,
 			int colWidth, OutputStream out) {
@@ -219,7 +248,8 @@ public class ExportExcelUtil {
 			datePattern = DEFAULT_DATE_PATTERN;
 		}
 		// 声明一个工作薄
-		SXSSFWorkbook workbook = new SXSSFWorkbook(1000);// 缓存
+		// 缓存
+		SXSSFWorkbook workbook = new SXSSFWorkbook(1000);
 		workbook.setCompressTempFiles(true);
 		// 表头样式
 		CellStyle titleStyle = workbook.createCellStyle();
@@ -277,21 +307,24 @@ public class ExportExcelUtil {
 		for (Object obj : jsonArray) {
 			if (rowIndex == 65535 || rowIndex == 0) {
 				if (rowIndex != 0) {
-					sheet = workbook.createSheet();// 如果数据超过了，则在第二页显示
+					// 如果数据超过了，则在第二页显示
+					sheet = workbook.createSheet();
 				}
+				// 表头 rowIndex=0
 
-				SXSSFRow titleRow = sheet.createRow(0);// 表头 rowIndex=0
+				SXSSFRow titleRow = sheet.createRow(0);
 				titleRow.createCell(0).setCellValue(title);
 				titleRow.getCell(0).setCellStyle(titleStyle);
 				sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, headMap.size() - 1));
-
-				SXSSFRow headerRow = sheet.createRow(1); // 列头 rowIndex =1
+				// 列头 rowIndex =1
+				SXSSFRow headerRow = sheet.createRow(1);
 				for (int i = 0; i < headers.length; i++) {
 					headerRow.createCell(i).setCellValue(headers[i]);
 					headerRow.getCell(i).setCellStyle(headerStyle);
 
 				}
-				rowIndex = 2;// 数据内容从 rowIndex=2开始
+				// 数据内容从 rowIndex=2开始
+				rowIndex = 2;
 			}
 			JSONObject jo = (JSONObject) JSONObject.toJSON(obj);
 			SXSSFRow dataRow = sheet.createRow(rowIndex);
@@ -316,9 +349,9 @@ public class ExportExcelUtil {
 			rowIndex++;
 		}
 		// 自动调整宽度
-		/*for (int i = 0; i < headers.length; i++) {
-		    sheet.autoSizeColumn(i);
-		}*/
+		/*
+		 * for (int i = 0; i < headers.length; i++) { sheet.autoSizeColumn(i); }
+		 */
 		try {
 			workbook.write(out);
 			workbook.close();
@@ -328,7 +361,14 @@ public class ExportExcelUtil {
 		}
 	}
 
-	// Web 导出excel
+	/**
+	 * Web 导出excel
+	 * 
+	 * @param title
+	 * @param headMap
+	 * @param ja
+	 * @param response
+	 */
 	public static void downloadExcelFile(String title, Map<String, String> headMap, JSONArray ja,
 			HttpServletResponse response) {
 		try {
@@ -384,18 +424,18 @@ public class ExportExcelUtil {
 
 		String title = "测试";
 		/*
-		OutputStream outXls = new FileOutputStream("E://a.xls");
-		System.out.println("正在导出xls....");
-		Date d = new Date();
-		ExcelUtil.exportExcel(title,headMap,ja,null,outXls);
-		System.out.println("共"+count+"条数据,执行"+(new Date().getTime()-d.getTime())+"ms");
-		outXls.close();*/
+		 * OutputStream outXls = new FileOutputStream("E://a.xls");
+		 * System.out.println("正在导出xls...."); Date d = new Date();
+		 * ExcelUtil.exportExcel(title,headMap,ja,null,outXls);
+		 * System.out.println("共"+count+"条数据,执行"+(new
+		 * Date().getTime()-d.getTime())+"ms"); outXls.close();
+		 */
 		//
 		OutputStream outXlsx = new FileOutputStream("E://b.xlsx");
 		System.out.println("正在导出xlsx....");
 		Date d2 = new Date();
 		ExportExcelUtil.exportExcelX(title, headMap, ja, null, 0, outXlsx);
-		System.out.println("共" + count + "条数据,执行" + (new Date().getTime() - d2.getTime()) + "ms");
+		System.out.println("共" + count + "条数据,执行" + (System.currentTimeMillis() - d2.getTime()) + "ms");
 		outXlsx.close();
 
 	}
